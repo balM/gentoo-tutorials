@@ -1,4 +1,6 @@
-gentoo-tutorials
-================
+## GENTOO-TUTORIALS
+_Install Guides: Gentoo Linux ~amd64_
 
-Gentoo linux setup guides
+[linuxz87.wordpress.com]
+
+[linuxz87.wordpress.com]: https://linuxz87.wordpress.com
