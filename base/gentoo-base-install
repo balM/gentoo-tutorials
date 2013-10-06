@@ -1,0 +1,439 @@
+GENTOO LINUX BASE INSTALL
+========================
+
+[ UPDATED TO KERNEL : 3.11.3-gentoo ]
+
+64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
+Install a minimal KISS base system with default openrc services.
+
+This is Part 1 of a 3 part mini-tutorial series on installing Gentoo Linux:
+
+  1. Base-Install *
+2. Base-Finalisation
+3. Base-Desktop
+
+
+INSTALL FOCUS
+-------------
+  Non UEFI boot setup - Standard BIOS
+  Single boot dedicated linux box
+  Desktop workstation - no hibernation, suspension or swap file
+  Hardware specific install (Z87-A + Haswell Corei7 + >=4GB Ram)
+  IPV4 Wired network connection behind a NAT broadband router
+  Partitionless BTRFS filesystems
+  ROOT and HOME BTRFS subvolumes for easy snapshot creation and recovery
+  Compile packages in tmpfs tmp directory
+  GTK+2 preferred gui
+  Minimal Openbox based notification free desktop
+
+HARDWARE TARGET
+-------------
+  MOTHERBOARD : Asus Z87-A
+  INTEL CPU : Corei7 (4770K) 4.core 8.thread 8M 3.50G
+  MEMORY : 32 GB 1600MHz DDR3
+  SSD : 120 GB SATA (/dev/sda = root filesystem)
+  HDD : 1TB 64M SATA 7200RPM (/dev/sdb = home filesystem)
+  VIDEO : Asus Nvidia GTX-660 DC2/OC 2G/D5 PCIE
+  MONITOR : Viewsonic VG2732m-LED 1920x1080x32 LCD
+  PRINTER : HP P2015N Network Printer IP address = 192.168.0.90
+  BROADBAND ROUTER : DHCP = disabled, Gateway = 192.168.0.1, wired static IP address = 192.168.0.91
+
+INSTALLATION OVERVIEW
+-------------
+  A. Download and write the SystemRescueCd boot iso to usb.
+  B. Boot from the SysRescueCd usb pendrive.
+  C. Configure the network manually with a static address.
+  D. View this Asus Z87-A base-install guide.
+  E. Initialise both the SSD and HDD disks if new, or clear existing partitions.
+  F. Format the partitionless disks with BTRFS and prepare the subvolumes.
+  G. Mount the subvolumes.
+  H. Install an amd64 stage3 tarball.  
+  I. Chroot into the new system.
+  J. Configure portage.
+  K. Setup system files.
+  L. Install the gentoo-sources kernel.
+  M. Install base system packages.
+  N. Setup the static ethernet network.
+  O. Set root password.
+  P. Install the Grub2 bootloader.
+  Q. Exit the chroot environment and reboot.
+  
+
+BASE INSTALL
+-------------
+
+  A. Download and write the SystemRescueCd boot iso to usb
+  
+    A1. Download the the Gentoo based SystemRescueCd iso
+        Download :: http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/3.8.0/systemrescuecd-x86-*.*.*.iso/download
+        
+    A2. Write the iso to a portable usb
+        LINUX : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#A.29_Recommended_USB_installation_method_from_Linux
+        WINDOWS : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#B.29_Recommended_USB_installation_method_from_Windows 
+          
+    
+  B. Boot from the SysRescueCd usb pendrive
+  
+    B1. Set the BIOS time to UTC (not local time)
+    >> Hold down F2 during the boot process. 
+    >> In EZ-Mode set the time to UTC time
+    >> Press F10 to save and reboot
+    NOTE: for UTC time see http://time.is/UTC 
+    
+    B2. At the boot prompt enter the following to enter the default live desktop environment
+    >> C  [Standard 64bit kernel (rescue64) with more choices]
+    >> 2  [SystemRescueCd with all files cached to memory]
+    # wizard
+    >> xorg-run
+    
+    
+  C. Configure the network manually with a static address
+ 
+    * NOTE: DHCP should be turned off for security reasons so in the open terminal configure the network manager manually
+    
+    # nm-connection-manager
+    >>>>>>>>>>
+    Choose the default eth0 entry
+    Change the IPv4 settings from DHCP to manual
+    Enter address : 192.168.0.91
+    Enter Netmount : 24
+    Enter Gateway : 192.168.0.1
+    Enter DNS services : 8.8.8.8,8.8.4.4 (google public DNS)
+    save
+    >>>>>>>>>>
+  
+    
+  D. View this Asus Z87-A base-install guide
+  
+    D1. Open the Midori web browser
+    
+    D2. Navigate to this guide on github
+    https://raw.github.com/ashnbclarke/gentoo-tutorial/master/base/gentoo-base-install
+    
+
+  E. Initialise both the SSD and HDD disks if new, or clear existing partitions
+  
+    [  /dev/sda 120GB  ] partitionless SSD
+         
+    # fdisk –c –u /dev/sda
+    # p (print the partition table) clear previous partitons if they exist with the 'd' command
+    # w (write partition table)
+      
+    [      /dev/sdb   1TB     ] partitionless HDD
+    
+    # fdisk –c –u /dev/sdb
+    # p (print the partition table) clear previous partitons if they exist with the 'd' command
+    # w (write partition table)
+      
+
+  F. Format the partitionless disks with BTRFS and prepare the subvolumes
+  
+    F1. Format the newly initiated or cleared disks
+    # mkfs.btrfs -f -L gentoo /dev/sda
+    # mkfs.btrfs -f -L home /dev/sdb
+    
+    F2. Create btrfs ROOT subvolume on SSD
+    # mount /dev/sda /mnt/gentoo
+      # cd /mnt/gentoo
+      # btrfs subvolume create /mnt/gentoo/ROOT
+      # btrfs subvolume list /mnt/gentoo (print subvolume info)
+      # cd /
+    # umount /dev/sda
+    
+    F3. Create btrfs HOME subvolume on HDD
+    # mount /dev/sdb /mnt/gentoo
+      # cd /mnt/gentoo
+      # btrfs subvolume create /mnt/gntoo/HOME
+      # btrfs subvolume list /mnt/gentoo (print subvolume info)
+      # cd /
+    # umount /dev/sdb
+    
+       
+  G. Mount the subvolumes
+
+    # mount -o noatime,ssd,subvol=ROOT /dev/sda /mnt/gentoo
+    # mkdir /mnt/gentoo/home
+    # mount -o noatime,subvol=HOME /dev/sdb /mnt/gentoo/home
+    # mount | column -t (print mount point info)
+   
+
+  H. Install an amd64 stage3 tarball     
+  
+	NOTE: open a tab in midori and navigate to your closest gentoo mirror to get the latest tarball download link for wget
+  
+	http://www.gentoo.org/main/en/mirrors2.xml  -> example JAPAN :  http://ftp.jaist.ac.jp/pub/Linux/Gentoo/releases/amd64/current-stage3/stage3-amd64-<date>.tar.bz2
+	  
+    # cd /mnt/gentoo
+    # wget  http://ftp.jaist.ac.jp/pub/Linux/Gentoo/releases/amd64/current-stage3/stage3-amd64-<date>.tar.bz2
+    # tar xjpf stage3-*.tar.bz2
+    # rm stage3-*.tar.bz2
+    # cd /
+
+
+  I. Chroot into the new system
+  
+  	* NOTE: no swap file or partition is required in this setup!
+  
+    # cp -L /etc/resolv.conf /mnt/gentoo/etc/
+	# mount -t tmpfs tmpfs /mnt/gentoo/tmp
+    # mount -t proc none /mnt/gentoo/proc
+	# mount --rbind /sys /mnt/gentoo/sys
+	# mount --rbind /dev /mnt/gentoo/dev
+	# cd /mnt/gentoo
+	# env -i HOME=/root TERM=$TERM /bin/bash
+	# chroot . /bin/bash -l
+	# export PS1="(chroot) $PS1"
+    
+    
+  J. Configure portage
+  
+    # emerge-webrsync
+    # emerge --sync --quiet
+    # eselect news list
+	# eselect news read
+    # nano /etc/portage/make.conf
+    ----------
+    # Build-time functionality 
+	# ======================== 
+	# profile :: default/linux/amd64/13.0
+	USE="
+	experimental symlink truetype 
+	" 
+
+	# Host Setting 
+	# ============ 
+	CHOST="x86_64-pc-linux-gnu" 
+
+	# Host and optimization settings 
+	# ============================== 
+	#  limit CFLAGS to core2 in the chroot environment
+	CFLAGS="-march=core2 -O2 -pipe" 
+	CXXFLAGS="${CFLAGS}" 
+	FFLAGS="${CFLAGS}" 
+	FCFLAGS="${FFLAGS}" 
+
+	# Advanced Masking 
+	# ================ 
+	ACCEPT_KEYWORDS="~amd64" 
+	ACCEPT_LICENSE="*" 
+
+	# Portage Directories 
+	# =================== 
+	PORTAGE_TMPDIR=/tmp 
+	PORTDIR=/usr/portage 
+	DISTDIR=/usr/portage/distfiles 
+	PKGDIR=/usr/portage/packages 
+	PORTDIR_OVERLAY=/usr/local/portage 
+
+	# Fetching files 
+	# ============== 
+	GENTOO_MIRRORS="distfiles.gentoo.org/ www.ibiblio.org/pub/Linux/distributions/gentoo" 
+
+	# Synchronizing Portage 
+	# ===================== 
+	SYNC="rsync://rsync.gentoo.org/gentoo-portage" 
+	PORTAGE_RSYNC_RETRIES="-1" 
+
+	# Advanced Features 
+	# ================= 
+	# io-scheduler = BFQ (ssd+hdd) 
+	EMERGE_DEFAULT_OPTS="--quiet --verbose --jobs=8 --load-average=8 --with-bdeps=y --autounmask-write=y" 
+	MAKEOPTS="-j8 -l8" 
+	INSTALL_MASK="INSTALL.gz TODO.gz" 
+	PORTAGE_NICENESS=3 
+	PORTAGE_IONICE_COMMAND="ionice -c 3 -p \${PID}" 
+	AUTOCLEAN="yes" 
+	FEATURES="userpriv usersandbox" 
+	PORTAGE_ELOG_CLASSES="log warn error" 
+	PORTAGE_ELOG_SYSTEM="save_summary:log,warn,error echo" 
+
+	# User Features 
+	# ============= 
+	LINGUAS="en en_GB" 
+	INPUT_DEVICES="evdev" 
+	VIDEO_CARDS="nvidia" 
+	GRUB_PLATFORMS="pc"
+	ALSA_CARDS="hda-intel" 
+    --------------
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.chroot  -P /etc/portage/make.conf
+    --------------  
+    # mkdir -p /usr/local/portage/profiles
+	# nano /usr/local/portage/profiles/repo_name
+	----------
+	gentoo-home
+	----------
+    
+ 
+  K. Setup system files
+  
+	K1. Configure localtime
+	# ls /usr/share/zoneinfo
+	# cp /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+	# echo "Asia/Hong_Kong" > /etc/timezone
+	# date (check output is correct!)
+  
+    K2. configure fstab
+    # nano /etc/fstab
+    ----------  
+	LABEL=gentoo / btrfs noatime,ssd,subvol=ROOT 0 0
+	LABEL=home /home btrfs noatime,subvol=HOME 0 0
+	tmpfs /tmp tmpfs noatime,nodiratime 0 0
+    ----------
+    
+    K3. Setup the hosts file and hostname
+    # nano /etc/conf.d/hostname
+    ----------  
+    gentoo
+    ----------
+    # nano /etc/hosts
+    ----------  
+    127.0.0.1	gentoo.home gentoo localhost.localdomain localhost
+    ----------
+    
+    K4. Setup locales (some applications require en_US!)
+    # nano /etc/locale.gen
+    ----------  
+    en_GB.UTF-8 UTF-8
+    en_US.UTF-8 UTF-8
+    ----------
+    # locale-gen
+    # nano /etc/env.d/02locale
+    ----------  
+    LANG=en_GB.UTF-8
+    LC_COLLATE=C
+    ----------   
+    
+    K5. Setup console font choices
+    # nano /etc/conf.d/consolefont
+    ----------  
+    FONT=Lat2-Terminus16
+    ---------- 
+    # rc-update add conslefont boot
+    
+    K6. Setup inittab to show init messages during the setup and finalisation phases
+    # nano /etc/inittab
+    ----------  
+	id:3:initdefault:
+	si::sysinit:/sbin/rc sysinit
+	rc::bootwait:/sbin/rc boot
+	l0:0:wait:/sbin/rc shutdown
+	l0s:0:wait:/sbin/halt -dhp
+	l1:1:wait:/sbin/rc single
+	l2:2:wait:/sbin/rc nonetwork
+	l3:3:wait:/sbin/rc default
+	l4:4:wait:/sbin/rc default
+	l5:5:wait:/sbin/rc default
+	l6:6:wait:/sbin/rc reboot
+	l6r:6:wait:/sbin/reboot -dk
+	su0:S:wait:/sbin/rc single
+	su1:S:wait:/sbin/sulogin 
+	c1:12345:respawn:/sbin/agetty 38400 --noclear tty1 linux
+	c2:2345:respawn:/sbin/agetty 38400 tty2 linux
+	ca:12345:ctrlaltdel:/sbin/shutdown -r now
+	x:a:once:/etc/X11/startDM.sh
+    ---------- 
+    
+    K7. Setup system services
+    # nano /etc/rc.conf
+    ----------
+    rc_parallel="NO"
+	rc_interactive="NO"
+	rc_shell=/sbin/sulogin
+	unicode="YES"
+	export SSD_NICELEVEL="-19"
+	rc_sys=""
+	rc_tty_number=12
+	rc_controller_cgroups="YES"
+    ----------
+    
+  L. Install the gentoo-sources kernel
+  
+	* NOTE: as no swap file or partition is required in this setup paging is disabled in this kernel
+  
+	# emerge gentoo-sources
+	# wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.3-gentoo -P /usr/src/linux/.config
+	# cd /usr/src/linux
+	# make menuconfig (check through configuration, then press 'Esc' key twice and answer yes to save)
+	# make -j8
+	# make modules_install
+	# make install
+	
+ 
+  M. Install base system packages
+  
+    M1. Setup a system logger
+    # emerge metalog
+    # rc-update add metalog default
+    
+	M2. Setup a file inder
+    # emerge mlocate
+    # rc-update add metalog default
+    
+	M3. Setup file system tools
+    # emerge btrfs-progs
+  
+  
+  N. Setup the static ethernet network
+  
+	# cd /etc/init.d
+	# ln -s net.lo net.enp3s0
+	# rc-update add net.enp3s0 default
+    # nano /etc/conf.d/net
+    ----------
+	config_enp3s0="192.168.0.91/24"
+	routes_enp3s0="default via 192.168.0.1"
+	dns_servers_enp3s0="8.8.8.8 8.8.4.4"
+	dns_domain_lo="home"
+    ----------
+    
+    
+  O. Set root password
+  
+    # passwd
+    
+    
+  P. Install the Grub2 bootloader
+   
+    P1. Install grub
+    # emerge grub
+    
+    P2. Configure grub for a silent boot
+    # cd /etc/grub.d
+    # rm 2* 3* 4* R*
+    
+      OPTIONAL: decrease grub boot verbosity - comment out 2 "echo" lines around 123 and 130
+      # nano -c 10*
+      ----------
+      #echo  '$(echo "$message" | grub_quote)'
+      ----------
+      
+    # nano /etc/default/grub
+    ----------
+	GRUB_DEFAULT=0
+	GRUB_HIDDEN_TIMEOUT=0
+	GRUB_HIDDEN_TIMEOUT_QUIET=true
+	GRUB_TIMEOUT=0
+	GRUB_DISTRIBUTOR="Gentoo"
+	GRUB_CMDLINE_LINUX_DEFAULT="quiet consoleblank=0"
+	GRUB_GFXMODE=1280x800x32
+	GRUB_GFXPAYLOAD_LINUX=keep
+	GRUB_DISABLE_RECOVERY=true
+    ----------
+    
+    P3. Install grub to /dev/sda (SSD device)
+    # grub2-install /dev/sda
+    
+    P4. Create grub configuration
+    # LANG=C grub-mkconfig -o /boot/grub/grub.cfg
+    
+    
+  Q Exit the chroot environment and reboot
+  
+	# exit
+	# cd /
+	# umount -l /mnt/gentoo/dev{/shm,/pts,}
+	# umount -l /mnt/gentoo{/home,/proc,}
+	# reboot
+	
+    
+    see next tutorial : Part 2 of 3 :: Base Finalisation
