@@ -8,9 +8,9 @@ Install a minimal KISS base system with default openrc services.
 
 This is Part 1 of a 3 part mini-tutorial series on installing Gentoo Linux:
 
-    1. Base-Install *
-2. Base-Finalisation
-3. Base-Desktop
+1. Base-Install *
+    2. Base-Finalisation
+    3. Base-Desktop
 
 
 INSTALL FOCUS
