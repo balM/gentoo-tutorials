@@ -65,7 +65,7 @@ BASE INSTALL
 A. Download and write the SystemRescueCd boot iso to usb
 
 	A1. Download the the Gentoo based SystemRescueCd iso
-	Download :: http://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/3.8.0/systemrescuecd-x86-*.*.*.iso/download
+	Download :: http://sourceforge.net/projects/systemrescuecd
 
 	A2. Write the iso to a portable usb
 	LINUX : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#A.29_Recommended_USB_installation_method_from_Linux
