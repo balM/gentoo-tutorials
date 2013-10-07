@@ -20,7 +20,7 @@ Single boot dedicated linux box
 Desktop workstation - no hibernation, suspension or swap file
 Hardware specific install (Z87-A + Haswell Corei7 + >=4GB Ram)
 IPV4 Wired network connection behind a NAT broadband router
-BFQ io-scheduler for both ssd and hdd disks
+BFQ IO scheduler for both ssd and hdd disks
 Partitionless BTRFS filesystems
 ROOT and HOME BTRFS subvolumes for easy snapshot creation and recovery
 Compile packages in tmpfs tmp directory
