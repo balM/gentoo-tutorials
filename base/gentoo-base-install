@@ -308,7 +308,7 @@ K. Setup system files
 	K5. Setup console font choices
 	# nano /etc/conf.d/consolefont
 	----------  
-	FONT=Lat2-Terminus16
+	consolefont="Lat2-Terminus16"
 	---------- 
 	# rc-update add conslefont boot
 
