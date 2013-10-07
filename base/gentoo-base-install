@@ -97,7 +97,7 @@ C. Configure the live usb environment network
 	Choose the default eth0 entry
 	Change the IPv4 settings from DHCP to manual
 	Enter address : 192.168.0.91
-	Enter Netmount : 24
+	Enter Netmask : 24
 	Enter Gateway : 192.168.0.1
 	Enter DNS services : 8.8.8.8,8.8.4.4 (google public DNS)
 	save
