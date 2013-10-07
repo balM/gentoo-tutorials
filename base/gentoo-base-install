@@ -90,7 +90,7 @@ B. Boot from the SysRescueCd usb pendrive
 
 C. Configure the live usb environment network
 
-	* NOTE: DHCP should be turned off for security reasons so in the open terminal configure the network manager manually
+	* NOTE: DHCP should be turned off for security reasons. In the default open terminal configure the network manager manually
 
 	# nm-connection-manager
 	>>>>>>>>>>
@@ -109,7 +109,7 @@ D. View this Asus Z87-A base-install guide
 	D1. Open the Midori web browser
 
 	D2. Navigate to this guide on github
-	https://raw.github.com/ashnbclarke/gentoo-tutorial/master/base/gentoo-base-install
+	https://raw.github.com/ashnbclarke/gentoo-tutorials/master/base/gentoo-base-install
 
 
 E. Initialise both the SSD and HDD disks if new, or clear existing partitions
