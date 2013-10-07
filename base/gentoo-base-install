@@ -74,11 +74,12 @@ A. Download and write the SystemRescueCd boot iso to usb
 
 B. Boot from the SysRescueCd usb pendrive
 
+	*NOTE: for UTC time see http://time.is/UTC
+
 	B1. Set the BIOS time to UTC (not local time)
 	>> Hold down F2 during the boot process. 
 	>> In EZ-Mode set the time to UTC time
 	>> Press F10 to save and reboot
-	NOTE: for UTC time see http://time.is/UTC 
 
 	B2. At the boot prompt enter the following to enter the default live desktop environment
 	>> C  [Standard 64bit kernel (rescue64) with more choices]
