@@ -334,8 +334,8 @@ K. Setup system files
 	ca:12345:ctrlaltdel:/sbin/shutdown -r now
 	x:a:once:/etc/X11/startDM.sh
   --------------  
-	!! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /etc/inittab
-	--------------  
+  !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /etc/inittab
+  --------------  
 
 	K7. Setup system services
 	# nano /etc/rc.conf
