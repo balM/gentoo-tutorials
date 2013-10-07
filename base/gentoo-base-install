@@ -257,8 +257,9 @@ J. Configure portage
     GRUB_PLATFORMS="pc"
     ALSA_CARDS="hda-intel" 
     --------------
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.chroot  -P /etc/portage/make.conf
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.chroot  -P /tmp
     --------------  
+    # mv /tmp/make.conf.chroot /etc/portage/make.conf
     # mkdir -p /usr/local/portage/profiles
     # nano /usr/local/portage/profiles/repo_name
     ----------
@@ -334,8 +335,9 @@ K. Setup system files
     ca:12345:ctrlaltdel:/sbin/shutdown -r now
     x:a:once:/etc/X11/startDM.sh
     --------------  
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /etc/inittab
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /tmp
     --------------  
+    # mv /tmp/inittab.verbose.chroot /etc/inittab
 
     K7. Setup system services
     # nano /etc/rc.conf
