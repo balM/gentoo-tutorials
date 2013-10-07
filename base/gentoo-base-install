@@ -42,7 +42,7 @@ INSTALLATION OVERVIEW
 -------------
 A. Download and write the SystemRescueCd boot iso to usb.
 B. Boot from the SysRescueCd usb pendrive.
-C. Configure the network manually with a static address.
+C. Configure the live usb environment network.
 D. View this Asus Z87-A base-install guide.
 E. Initialise both the SSD and HDD disks if new, or clear existing partitions.
 F. Format the partitionless disks with BTRFS and prepare the subvolumes.
@@ -88,7 +88,7 @@ B. Boot from the SysRescueCd usb pendrive
 	>> xorg-run
 
 
-C. Configure the network manually with a static address
+C. Configure the live usb environment network
 
 	* NOTE: DHCP should be turned off for security reasons so in the open terminal configure the network manager manually
 
