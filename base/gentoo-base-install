@@ -18,7 +18,7 @@ INSTALL FOCUS
 Non UEFI boot setup - Standard BIOS
 Single boot dedicated linux box
 Desktop workstation - no hibernation, suspension or swap file
-Hardware specific install (Z87-A + Haswell Corei7 + >=4GB Ram)
+Hardware specific install (Z87-A + Haswell Corei7 + >=8GB Ram)
 IPV4 Wired network connection behind a NAT broadband router
 BFQ IO scheduler for both ssd and hdd disks
 Partitionless BTRFS filesystems
