@@ -1,6 +1,8 @@
 GENTOO LINUX BASE INSTALL
 =========================
 
+Live usb chroot installation
+
 [ UPDATED TO KERNEL : 3.11.4-gentoo ]
 
 64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
