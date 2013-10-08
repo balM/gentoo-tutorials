@@ -411,7 +411,9 @@ P. Install the Grub2 bootloader
     # nano -c 10*
     ----------
     #echo  '$(echo "$message" | grub_quote)'
-    ----------
+    --------------
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/grub.d/10_linux -P /etc/grub.d
+    --------------
 
     # nano /etc/default/grub
     ----------
@@ -424,7 +426,9 @@ P. Install the Grub2 bootloader
     GRUB_GFXMODE=1280x800x32
     GRUB_GFXPAYLOAD_LINUX=keep
     GRUB_DISABLE_RECOVERY=true
-    ----------
+    --------------
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/default/grub -P /etc/default
+    --------------
 
     P3. Install grub to /dev/sda (SSD device)
     # grub2-install /dev/sda
