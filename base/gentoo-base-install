@@ -1,9 +1,12 @@
 GENTOO LINUX BASE INSTALL
 =========================
 
-Live usb chroot installation
+[ KERNEL : 3.11.4-gentoo ]
 
-[ UPDATED TO KERNEL : 3.11.4-gentoo ]
+
+Live usb chroot installation
+----------------------------
+
 
 64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
 Install a minimal KISS base system with default openrc services.
