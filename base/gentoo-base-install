@@ -372,16 +372,27 @@ L. Install the gentoo-sources kernel
 
 M. Install base system packages
 
-    M1. Setup a system logger
+    M1. Setup BTRFS and snapshot directories
+    # emerge btrfs-progs
+    # mkdir /000 /home/001
+
+    M2. Setup a file indexer
+    # emerge mlocate
+    # nano /etc/updatedb.conf
+    ----------
+    # Remove BTRFS snapshot directories [/000, /home/001] from search results
+    PRUNEFS="afs anon_inodefs auto autofs bdev binfmt binfmt_misc cgroup cifs coda configfs cramfs cpuset debugfs devpts devtmps devfs devpts ecryptfs eventpollfs exofs futexfs ftpfs fuse fusectl gfs gfs2 hostfs hugetlbfs inotifyfs iso9660 jffs2 lustre misc mqueue ncpfs nfs NFS nfs4 nfsd nnpfs ocfs ocfs2 pipefs proc ramfs rpc_pipefs securityfs selinuxfs sfs shfs smbfs sockfs spufs sshfs subfs supermount sysfs tmpfs ubifs udf usbfs vboxsf vperfctrfs"
+    PRUNEPATHS="/tmp /var/tmp /var/cache /var/lock /var/run /var/spool /000 /home/001"
+    PRUNENAMES=".git .hg .svn CVS"
+    PRUNE_BIND_MOUNTS="yes"
+    ----------
+    
+    M3. Setup a system logger
     # emerge metalog
     # rc-update add metalog default
-
-    M2. Setup a file inder
-    # emerge mlocate
-    # rc-update add metalog default
-
-    M3. Setup file system tools
-    # emerge btrfs-progs
+    
+    M4. Setup Sudo (required by bash aliases)
+    # USE="-sendmail" emerge sudo
 
 
 N. Setup the static ethernet network
