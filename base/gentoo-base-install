@@ -415,7 +415,7 @@ O. Set root password
 P. Install the Grub2 bootloader
 
     P1. Install grub
-    # emerge grub
+    # emerge -a grub
 
     P2. Configure grub for a silent boot
     # cd /etc/grub.d
@@ -426,8 +426,9 @@ P. Install the Grub2 bootloader
     ----------
     #echo  '$(echo "$message" | grub_quote)'
     --------------
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/grub.d/10_linux -P /etc/grub.d
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/grub.d/10_linux -P /tmp
     --------------
+    # mv /tmp/10_linux /etc/grub.d
 
     # nano /etc/default/grub
     ----------
@@ -441,14 +442,15 @@ P. Install the Grub2 bootloader
     GRUB_GFXPAYLOAD_LINUX=keep
     GRUB_DISABLE_RECOVERY=true
     --------------
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/default/grub -P /etc/default
+    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/default/grub -P /tmp 
     --------------
+    # mv /tmp/grub /etc/default
 
     P3. Install grub to /dev/sda (SSD device)
     # grub2-install /dev/sda
 
     P4. Create grub configuration
-    # LANG=C grub-mkconfig -o /boot/grub/grub.cfg
+    # LANG=C grub2-mkconfig -o /boot/grub/grub.cfg
 
 
 Q. Exit the chroot environment and reboot
