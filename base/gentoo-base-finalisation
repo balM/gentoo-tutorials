@@ -105,8 +105,7 @@ A. Update system prior to optimisation
     A7. Install the gentoo toolkit
     # emerge -a gentoolkit
 
-    A8. update portage and upgrade system with minimal useflags
-    # eix-sync
+    A8. Upgrade system with minimal useflags
     # emerge -auDN system"
     
     
