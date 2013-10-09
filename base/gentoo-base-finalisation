@@ -84,8 +84,8 @@ A. Update system prior to optimisation
     
     # NOTE: avoid known update caveats when upgrading from amd64 to ~amd64
     
-    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/package.mask.finalisation -P /tmp
-    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/package.use.finalisation -P /tmp
+    # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/package.mask.finalisation -P /tmp
+    # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/package.use.finalisation -P /tmp
     # mv /tmp/package.mask.finalisation /etc/portage/package.mask
     # mv /tmp/package.use.finalisation /etc/portage/package.use
     
@@ -121,7 +121,7 @@ B. Update GCC default compiler
     
 C. Update make.conf with use flags ready for system optimisation
 
-    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/make.conf.finalisation -P /tmp
+    # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.finalisation -P /tmp
     # mv /tmp/make.conf.finalisation /etc/portage/make.conf
     
     
@@ -156,11 +156,11 @@ F. Rebuild an optimised world system (cautious approach!)
     # emerge -afuDN system
     # emerge -auDN system
 
-    F3. Download and rebuild all packages
+    F3. Download and rebuild all packages (not strictly needed, but well worth the clean start)
     # emerge -afe world
     # emerge -ae world
     
-    !! go make a cup of coffee while your system rebuilds! (estimate=40-60 mins mins)
+    !! go make a cup of coffee while your system rebuilds! (estimate = 60 mins)
 
     
 G. Install the realtek 8111GR Gigabit Lan controller firmware
@@ -181,13 +181,13 @@ H. Reconfigure the upgraded network system using iproute2
     # rc-update del net.enp3s0 default
     # rm /etc/init.d/net.enp3s0
     
-    H2. Remove old net.lo rc script
+    H2. Remove the old net.lo rc script
     # rc-update del net.lo boot
     
-    H3. (optional) Remove netmount rc script if unused
+    H3. (optional) Remove the netmount rc script if unused
     # rc-update del netmount default
 
-    H4. Replace existing resolv.conf (this is now a manually edited file)
+    H4. Replace the existing resolv.conf (this is now a manually edited file)
     # rm /etc/resolv.conf
     # nano /etc/resolv.conf
     ----------
@@ -195,7 +195,7 @@ H. Reconfigure the upgraded network system using iproute2
     nameserver 8.8.4.4
     ----------
     
-    H5. Remove old net config script
+    H5. Remove the old net config script
     # rm /etc/conf.d/net
     
     H6. Create a new static ethernet "network" config file
@@ -205,7 +205,7 @@ H. Reconfigure the upgraded network system using iproute2
     defaultiproute="via 192.168.0.1"
     ----------
     
-    H7. Update network service to run at boot
+    H7. Update the network service to run at boot
     # rc-update add network default
     # service start network
     
@@ -217,7 +217,7 @@ I. Install and setup dnsmasq as a DNS caching daemon
 
     I2. Enable dnsmasq DNS caching
     # rm nano /etc/dnsmasq.conf
-    # echo "listen-address=127.0.0.1"> /etc/dnsmasq.conf
+    # echo "listen-address=127.0.0.1" > /etc/dnsmasq.conf
     # nano /etc/resolv..conf
     ----------
     127.0.0.1
@@ -299,7 +299,7 @@ L. Configure Infinality fonts
 
 M. Improve nano filetype recognition
 
-    # sudo wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/nanorc -P /tmp
+    # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/nanorc -P /tmp
     # mv /tmp/nanorc /etc
     
 
@@ -354,6 +354,5 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
     # umount /mnt
     # reboot (remove live usb)
    
-       
     
     see next tutorial : Part 3 of 3 :: Gentoo Base Desktop
