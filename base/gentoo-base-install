@@ -362,7 +362,7 @@ L. Install the gentoo-sources kernel
 
     * NOTE: as no swap file or partition is required in this setup paging is disabled in this kernel
 
-    # emerge --ask gentoo-sources
+    # emerge -a gentoo-sources
     # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.4-gentoo -P /tmp
     # mv /tmp/config-3.11.4-gentoo /usr/src/linux/.config
     # cd /usr/src/linux
@@ -375,7 +375,7 @@ L. Install the gentoo-sources kernel
 M. Install base system packages
 
     M1. Setup BTRFS and snapshot directories
-    # emerge btrfs-progs
+    # emerge -a btrfs-progs
     # mkdir /000 /home/001
 
     M2. Setup a file indexer
