@@ -195,9 +195,10 @@ I. Chroot into the new system
 J. Configure portage
 
     # emerge-webrsync
-    # emerge --sync --quiet
     # eselect news list
     # eselect news read
+    # eselect news purge
+    # emerge --sync --quiet
     # nano /etc/portage/make.conf
     ----------
     # Build-time functionality 
@@ -316,7 +317,7 @@ K. Setup system files
     ----------  
     consolefont="Lat2-Terminus16"
     ---------- 
-    # rc-update add conslefont boot
+    # rc-update add consolefont boot
 
     K6. Setup inittab to show init messages during the setup and finalisation phases
     # nano /etc/inittab
