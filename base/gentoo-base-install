@@ -267,9 +267,14 @@ J. Configure portage
     --------------  
     # mv /tmp/make.conf.chroot /etc/portage/make.conf
     # mkdir -p /usr/local/portage/profiles
+    # mkdir /usr/local/portage/metadata
     # nano /usr/local/portage/profiles/repo_name
     ----------
     gentoo-home
+    ----------
+    # nano /usr/local/portage/metadata/layout.con
+    ----------
+    masters = gentoo
     ----------
 
 
@@ -439,9 +444,6 @@ P. Install the Grub2 bootloader
     GRUB_GFXPAYLOAD_LINUX=keep
     GRUB_DISABLE_RECOVERY=true
     --------------
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/default/grub -P /tmp 
-    --------------
-    # mv /tmp/grub /etc/default
 
     P3. Install grub to /dev/sda (SSD device)
     # grub2-install /dev/sda
