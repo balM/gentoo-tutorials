@@ -389,7 +389,7 @@ M. Install base system packages
     # emerge -a metalog
     # rc-update add metalog default
     
-    M4. Setup Sudo (required by bash aliases)
+    M4. Setup Sudo
     # USE="-sendmail" emerge -a sudo
 
 
