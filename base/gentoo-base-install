@@ -386,11 +386,11 @@ M. Install base system packages
     >>>>>>>>>>
     
     M3. Setup a system logger
-    # emerge metalog
+    # emerge -a metalog
     # rc-update add metalog default
     
     M4. Setup Sudo (required by bash aliases)
-    # USE="-sendmail" emerge sudo
+    # USE="-sendmail" emerge -a sudo
 
 
 N. Setup the static ethernet network
