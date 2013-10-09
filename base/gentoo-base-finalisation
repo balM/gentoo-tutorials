@@ -46,24 +46,24 @@ BROADBAND ROUTER : DHCP = disabled, Gateway = 192.168.0.1, wired static IP addre
 
 INSTALLATION OVERVIEW
 -------------
-A. Update system prior to optimisation
-B. Update GCC default compiler
-C. Update make.conf with use flags ready for system optimisation
-D. Install Oracle JDK as default java vm
-E. Update portage to use python3
-F. Rebuild an optimised world system (cautious approach!)
-G. Install the realtek 8111GR Gigabit Lan controller firmware
-H. Reconfigure the upgraded network system using iproute2
-I. Install and setup dnsmasq as a DNS caching daemon
-j. Enable/Disable standard openrc services
-K. Configure eselect defaults
-L. Configure Infinality fonts
-M. Improve nano filetype recognition
-N. Configure sudo for users
-O. Create user account
-P. Reboot and log back in as user
-Q. Create a btrfs snapshot of finalised base installation
-R. Replace the current subvolume with a snapshot [RECOVERY]
+A. Update system prior to optimisation.
+B. Update GCC default compiler.
+C. Update make.conf with use flags ready for system optimisation.
+D. Install Oracle JDK as default java vm.
+E. Update portage to use python3.
+F. Rebuild an optimised world system (cautious approach!).
+G. Install the realtek 8111GR Gigabit Lan controller firmware.
+H. Reconfigure the upgraded network system using iproute2.
+I. Install and setup dnsmasq as a DNS caching daemon.
+j. Enable/Disable standard openrc services.
+K. Configure eselect defaults and config files.
+L. Configure Infinality fonts.
+M. Improve nano filetype recognition.
+N. Configure sudo for users.
+O. Create user account.
+P. Reboot and log back in as user.
+Q. Create a btrfs snapshot of finalised base installation.
+R. Replace the current subvolume with a snapshot [RECOVERY].
 
 
 BASE FINALISATION
@@ -273,12 +273,17 @@ j. Enable/Disable standard openrc services
           urandom | boot  
         
 
-K. Configure eselect defaults
+K. Configure eselect defaults and config files
 
     # eselect editor set (1) (/bin/nano)
     # eselect pager set (2) (/usr/bin/less)
     # eselect infinality set (2) (infinality)
     # eselect lcdfilter set (6) (infinality-push)
+    # etc-update
+    >>>>>>>>>>
+    -7 (delete all updates)
+    Yes
+    >>>>>>>>>>
     
     
 L. Configure Infinality fonts
