@@ -1,0 +1,359 @@
+GENTOO LINUX BASE FINALISATION
+==============================
+
+[ UPDATED TO ORACLE-JDK-BIN : 1.7.0.40 ]
+
+
+Pre-desktop optimisation
+-------------------------
+
+
+64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
+Finalise and update a minimal KISS base system to prepare for desktop installation.
+
+This is Part 2 of a 3 part mini-tutorial series on installing Gentoo Linux:
+
+1. Base-Install
+2. Base-Finalisation *
+    3. Base-Desktop
+
+
+INSTALL FOCUS
+-------------
+Non UEFI boot setup - Standard BIOS
+Single boot dedicated linux box
+Desktop workstation - no hibernation, suspension or swap file
+Hardware specific install (Z87-A + Haswell Corei7 + >=4GB Ram)
+IPV4 Wired network connection behind a NAT broadband router
+BFQ IO scheduler for both ssd and hdd disks
+Partitionless BTRFS filesystems
+ROOT and HOME BTRFS subvolumes for easy snapshot creation and recovery
+Compile packages in tmpfs tmp directory
+GTK+2 preferred gui
+Minimal Openbox based notification free desktop
+
+HARDWARE TARGET
+-------------
+MOTHERBOARD : Asus Z87-A
+INTEL CPU : Corei7 (4770K) 4.core 8.thread 8M 3.50G
+MEMORY : 32 GB 1600MHz DDR3
+SSD : 120 GB SATA (/dev/sda = root filesystem)
+HDD : 1TB 64M SATA 7200RPM (/dev/sdb = home filesystem)
+VIDEO : Asus Nvidia GTX-660 DC2/OC 2G/D5 PCIE
+MONITOR : Viewsonic VG2732m-LED 1920x1080x32 LCD
+PRINTER : HP P2015N Network Printer IP address = 192.168.0.90
+BROADBAND ROUTER : DHCP = disabled, Gateway = 192.168.0.1, wired static IP address = 192.168.0.91
+
+INSTALLATION OVERVIEW
+-------------
+A. Update system prior to optimisation
+B. Update GCC default compiler
+C. Update make.conf with use flags ready for system optimisation
+D. Install Oracle JDK as default java vm
+E. Update portage to use python3
+F. Rebuild an optimised world system (cautious approach!)
+G. Install the realtek 8111GR Gigabit Lan controller firmware
+H. Reconfigure the upgraded network system using iproute2
+I. Install and setup dnsmasq as a DNS caching daemon
+j. Enable/Disable standard openrc services
+K. Configure eselect defaults
+L. Configure Infinality fonts
+M. Improve nano filetype recognition
+N. Configure sudo for users
+O. Create user account
+P. Reboot and log back in as user
+Q. Create a btrfs snapshot of finalised base installation
+R. Replace the current subvolume with a snapshot [RECOVERY]
+
+
+BASE FINALISATION
+-------------
+
+    * NOTE: Ignore all 'etc-updates' and 'eselect news read' until the end of the tutorial
+    * NOTE: Ignore all '!!! existing preserved libs found' messages - this will be dealt with in due course
+
+A. Update system prior to optimisation
+    
+    A1. Login as root and sync portage
+    # emerge --sync
+    
+    A2. Remove login distractions
+    # touch .hushlogin
+
+    A3. Update portage masks and use package definitions
+    
+    # NOTE: avoid known update caveats when upgrading from amd64 to ~amd64
+    
+    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/package.mask.finalisation -P /tmp
+    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/package.use.finalisation -P /tmp
+    # mv /tmp/package.mask.finalisation /etc/portage/package.mask
+    # mv /tmp/package.use.finalisation /etc/portage/package.use
+    
+    A3. Upgrade portage
+    # emerge -a portage
+    
+    A4. install Locale-gettext
+    # emerge -a1 Locale-gettext
+    
+    A5. Install the eix portage helper
+    # emerge -a eix
+    # eix-update
+    
+    A6. Install modern kernel routing and traffic control utilities
+    # emerge -a iproute2
+    
+    A7. Install the gentoo toolkit
+    # emerge -a gentoolkit
+
+    A8. update portage and upgrade system with minimal useflags
+    # eix-sync
+    # emerge -auDN system"
+    
+    
+B. Update GCC default compiler
+
+    # gcc-config -l
+    # gcc-config (n) (where n=latest gcc version)
+    # gcc-config -l (check latest gcc version is now active)
+    # emerge -a1 libtool
+    # emerge -a @preserved-rebuild
+    
+    
+C. Update make.conf with use flags ready for system optimisation
+
+    # wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/portage/make.conf.finalisation -P /tmp
+    # mv /tmp/make.conf.finalisation /etc/portage/make.conf
+    
+    
+D. Install Oracle JDK as default java vm
+
+    D1. Download oracle-jdk-bin fetch restricted sources
+    # cd /tmp
+    # wget https://raw.github.com/ashnbclarke/gentoo-system/master/usr/local/bin/jdk-download.sh
+    # chmod +x jdk-download.sh
+    # ./jdk-download.sh
+    # mv jdk-7* /usr/portage/distfiles
+    
+    D2. install oracle-jdk-bin
+    # emerge -a oracle-jdk-bin
+      
+
+E. Update portage to use python3
+
+    # eselect python list
+    # eselect python set (n) (where n= latest python)
+    # emerge -a1 portage
+    
+    
+F. Rebuild an optimised world system (cautious approach!)
+
+    *Note: When doing multiple package rebuilds downloading app sources beforehand is a good idea!
+
+    F1. Rebuild GCC with new optimised cflags and gcj support    
+    # emerge -a1 gcc
+    
+    F2. Download and rebuild system for changed useflags
+    # emerge -afuDN system
+    # emerge -auDN system
+
+    F3. Download and rebuild all packages
+    # emerge -afe world
+    # emerge -ae world
+    
+    !! go make a cup of coffee while your system rebuilds! (estimate=40-60 mins mins)
+
+    
+G. Install the realtek 8111GR Gigabit Lan controller firmware
+
+    G1. Install firmware package
+    # emerge -a linux-firmware
+    
+    G2. Edit the list of firmware to load at boot (only one firmware required for asus-Z87-A)
+    # rm /etc/portage/savedconfig/sys-kernel/linux-firmware-<date>
+    # echo "rtl_nic/rtl8168g-2.fw" > /etc/portage/savedconfig/sys-kernel/linux-firmware-<date>
+    
+    
+H. Reconfigure the upgraded network system using iproute2
+
+    NOTE: we are now using 'netifrc' + 'newnet' so the following changes are needed:
+    
+    H1. Remove the old net.enp3s0 service and link
+    # rc-update del net.enp3s0 default
+    # rm /etc/init.d/net.enp3s0
+    
+    H2. Remove old net.lo rc script
+    # rc-update del net.lo boot
+    
+    H3. (optional) Remove netmount rc script if unused
+    # rc-update del netmount default
+
+    H4. Replace existing resolv.conf (this is now a manually edited file)
+    # rm /etc/resolv.conf
+    # nano /etc/resolv.conf
+    ----------
+    nameserver 8.8.8.8
+    nameserver 8.8.4.4
+    ----------
+    
+    H5. Remove old net config script
+    # rm /etc/conf.d/net
+    
+    H6. Create a new static ethernet "network" config file
+    # nano /etc/conf.d/network
+    ----------
+    ip_enp3s0="192.168.0.91/24"
+    defaultiproute="via 192.168.0.1"
+    ----------
+    
+    H7. Update network service to run at boot
+    # rc-update add network default
+    # service start network
+    
+    
+I. Install and setup dnsmasq as a DNS caching daemon
+
+    I1. Install dnsmasq
+    # emerge -a dnsmasq
+
+    I2. Enable dnsmasq DNS caching
+    # rm nano /etc/dnsmasq.conf
+    # echo "listen-address=127.0.0.1"> /etc/dnsmasq.conf
+    # nano /etc/resolv..conf
+    ----------
+    127.0.0.1
+    nameserver 8.8.8.8
+    nameserver 8.8.4.4
+    ----------
+    # rc-update add dnsmasq default
+    
+ 
+j. Enable/Disable standard openrc services
+
+    J1. Enable standard services
+    # rc-update add consolekit default
+    # rc-update add dbus default
+    
+    J2. Disable standard services
+    # rc-update del swap boot
+    # rc-update del swapfiles boot
+    # rc-update del fsck boot
+    
+    J4. Review openrc services
+    # rc-update show
+                   
+         bootmisc | boot                         
+      consolefont | boot                         
+       consolekit | default                                
+             dbus | default                 
+            devfs | sysinit
+            dmesg | sysinit 
+          dnsmasq | default                                                        
+         hostname | boot                         
+          hwclock | boot                         
+          keymaps | boot                         
+        killprocs | shutdown                         
+            local | default                 
+       localmount | boot                         
+         loopback | boot                         
+          metalog | default                 
+          modules | boot                         
+         mount-ro | shutdown        
+             mtab | boot                         
+          network | default                 
+           procfs | boot                         
+             root | boot                         
+        savecache | shutdown        
+           sysctl | boot                         
+            sysfs | sysinit
+     termencoding | boot                         
+     tmpfiles.dev | sysinit
+   tmpfiles.setup | boot                         
+             udev | sysinit
+       udev-mount | sysinit
+          urandom | boot  
+        
+
+K. Configure eselect defaults
+
+    # eselect editor set (1) (/bin/nano)
+    # eselect pager set (2) (/usr/bin/less)
+    # eselect infinality set (2) (infinality)
+    # eselect lcdfilter set (6) (infinality-push)
+    
+    
+L. Configure Infinality fonts
+
+    L1. Remove old fontconfig defaults
+    # cd /etc/fonts/conf.d
+    # rm *
+    
+    L2. Replace fontconfig with Infinality single solution
+    # ln -s ../conf.avail/52-infinality.conf
+    
+    L3. Check Infinality fontconfig settings (only one alias should be active *)
+    # eselect fontconfig list
+    >>>>>>>>>>
+    [n] 52-infinality.conf *
+    >>>>>>>>>>
+        
+
+M. Improve nano filetype recognition
+
+    # sudo wget https://github.com/ashnbclarke/gentoo-system/blob/master/etc/nanorc -P /tmp
+    # mv /tmp/nanorc /etc
+    
+
+N. Configure sudo for users
+
+    *NOTE: NOPASSWD can be later removed if working in a multi-user environment
+
+    # visudo
+    ----------
+    root ALL=(ALL) ALL
+    wheel ALL=(ALL) NOPASSWD: ALL
+    ----------
+
+
+O. Create user account
+
+    # useradd -m -G wheel -s /bin/bash <user>
+    # passwd <user>
+    
+    
+P. Reboot and log back in as user
+
+    # touch .hushlogin
+    
+    
+Q. Create a btrfs snapshot of finalised base installation
+
+    *NOTE: This process is simplified in the next tutorial with bash scripts and aliases
+
+    Q1. Create snapshot of current root system directory on /dev/sda
+    # sudo btrfs subvolume snapshot / /000/root-test-snapshot
+    
+    Q2. Check the status of the new snapshot
+    # ls -alh /000
+    # sudo btrfs subvolume list /
+
+    Q3. To delete old snaphots if and when no longer needed
+    # sudo btrfs subvolume delete /000/root-test-snapshot
+    
+    
+R. Replace the current subvolume with a snapshot [RECOVERY]
+
+    N1. Boot from the systemrescuecd live usb
+       
+    N2. Mount the drive containing the ROOT subvolume to the live usb's /backup directory
+    # mount /dev/sda /mnt/backup
+    # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
+    # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
+    # btrfs subvolume delete /mnt/backup/ROOT-old/000/root-test-snapshot
+    # btrfs subvolume delete /mnt/ROOT-old/
+    # sudo btrfs subvolume list /mnt
+    # umount /mnt
+    # reboot (remove live usb)
+   
+       
+    
+    see next tutorial : Part 3 of 3 :: Gentoo Base Desktop
