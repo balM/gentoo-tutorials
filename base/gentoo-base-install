@@ -426,9 +426,6 @@ P. Install the Grub2 bootloader
     ----------
     #echo  '$(echo "$message" | grub_quote)'
     --------------
-    !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/grub.d/10_linux -P /tmp
-    --------------
-    # mv /tmp/10_linux /etc/grub.d
 
     # nano /etc/default/grub
     ----------
