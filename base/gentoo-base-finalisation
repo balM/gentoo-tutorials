@@ -283,6 +283,9 @@ K. Configure eselect defaults and config files
     -7 (delete all updates)
     Yes
     >>>>>>>>>>
+    # eselect news list
+    # eselect news read
+    # eselect news purge
     
     
 L. Configure Infinality fonts
