@@ -346,9 +346,9 @@ Q. Create a btrfs snapshot of finalised base installation
     
 R. Replace the current subvolume with a snapshot [RECOVERY]
 
-    N1. Boot from the systemrescuecd live usb
+    R1. Boot from the systemrescuecd live usb
        
-    N2. Mount the drive containing the ROOT subvolume to the live usb's /backup directory
+    R2. Mount the drive containing the ROOT subvolume to the live usb's /backup directory
     # mount /dev/sda /mnt/backup
     # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
     # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
