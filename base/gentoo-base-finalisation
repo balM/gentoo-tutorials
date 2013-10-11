@@ -54,7 +54,7 @@ E. Update portage to use python3.
 F. Rebuild an optimised world system (cautious approach!).
 G. Install the realtek 8111GR Gigabit Lan controller firmware.
 H. Reconfigure the upgraded network system using iproute2.
-I. Install and setup dnsmasq as a DNS caching daemon.
+I. Install and setup dnsmasq and macchanger.
 j. Enable/Disable standard openrc services.
 K. Configure eselect defaults and config files.
 L. Configure Infinality fonts.
@@ -209,9 +209,9 @@ H. Reconfigure the upgraded network system using iproute2
     # service start network
     
     
-I. Install and setup dnsmasq as a DNS caching daemon
+I. Install and setup dnsmasq and macchanger
 
-    I1. Install dnsmasq
+    I1. Install dnsmasq (DNS caching daemon)
     # emerge -a dnsmasq
 
     I2. Enable dnsmasq DNS caching
@@ -224,6 +224,14 @@ I. Install and setup dnsmasq as a DNS caching daemon
     nameserver 8.8.4.4
     ----------
     # rc-update add dnsmasq default
+    
+    I3. Install macchanger (Ethernet card MAC address Changer)
+    # emerge -a macchanger
+    # nano /etc/local.d/startup.start
+    ----------
+    macchanger -Abr enp3s0 >> /dev/null
+    ----------
+    # chmod +x /etc/local.d/startup.start
     
  
 j. Enable/Disable standard openrc services
