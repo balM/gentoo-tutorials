@@ -3,6 +3,11 @@ GENTOO LINUX BASE INSTALL
 
 [ UPDATED TO KERNEL : 3.11.4-gentoo ]
 
+
+From chroot to first boot
+-------------------------
+
+
 64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
 Install a minimal KISS base system with default openrc services.
 
@@ -18,13 +23,13 @@ INSTALL FOCUS
 Non UEFI boot setup - Standard BIOS
 Single boot dedicated linux box
 Desktop workstation - no hibernation, suspension or swap file
-Hardware specific install (Z87-A + Haswell Corei7 + >=4GB Ram)
+Hardware specific install (Z87-A + Haswell Corei7 + >=8GB Ram)
 IPV4 Wired network connection behind a NAT broadband router
 BFQ IO scheduler for both ssd and hdd disks
 Partitionless BTRFS filesystems
 ROOT and HOME BTRFS subvolumes for easy snapshot creation and recovery
 Compile packages in tmpfs tmp directory
-GTK+2 preferred gui
+GTK+2 preferred gui (gtk+3 not installed)
 Minimal Openbox based notification free desktop
 
 HARDWARE TARGET
