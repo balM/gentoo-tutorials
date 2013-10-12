@@ -1,5 +1,5 @@
-GENTOO LINUX BASE FINALISATION
-==============================
+GENTOO LINUX BASE DESKTOP
+=========================
 
 [ UPDATED TO KERNEL : 3.11.4-gentoo ]
 
@@ -60,8 +60,15 @@ J. Install and configure Xorg and NVidia drivers.
 K. Install Openbox and attending desktop packages.
 L. Expand useful desktop applications.
 M. Install a network printer via a ppd file.
-
-
+N. Install login manager Slim with Gentoo theme.
+O. Install system icons and gtk+ theme.
+P. Install bash scripts and bash aliases.
+Q. Prepare use of themes and default applications for users.
+R. Check for use flag changes.
+S. Reboot and login as user to check OpenRC.
+T. Change OpenRC boot verbosity and startup type.
+U. reboot and login as user to check inittab silent boot.
+V. Check Slim login manager functionality and update settings.
 
 
 BASE DESKTOP
@@ -498,7 +505,7 @@ T. Change OpenRC boot verbosity and startup type
 U. reboot and login as user to check inittab silent boot
 
 
-V. Check and update Slim login manager functionality
+V. Check Slim login manager functionality and update settings
 
   # sudo slim
   
