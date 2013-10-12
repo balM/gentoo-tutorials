@@ -1,0 +1,91 @@
+# MINIMAL CONKY ASUSZ87-A
+# =======================
+
+alignment top_right
+background yes
+cpu_avg_samples 2
+default_color 000000		
+default_outline_color 000000 	
+default_shade_color 000000	
+double_buffer yes
+draw_borders no
+draw_graph_borders no
+draw_outline no
+draw_shades no
+gap_x 22
+gap_y 612
+max_specials 1024
+max_user_text 10000
+maximum_width 100
+minimum_size 300 400
+net_avg_samples 2
+no_buffers yes
+override_utf8_locale yes
+
+own_window yes
+own_window_colour 000000	
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_transparent yes
+own_window_type override 
+
+pad_percents 2			
+short_units yes			
+stippled_borders 3
+text_buffer_size 8000
+total_run_times 0
+update_interval 3.0
+uppercase no
+use_spacer right
+use_xft yes
+xftalpha 1
+
+# horizontal line
+color1 D2D2D2
+# title
+color2 9AB7DC
+# value
+color3 FFFFFF
+
+TEXT
+${font ubuntu:size=8}${alignr}${color2}gentoo.home${font pftempestafivecondensed:size=6}
+${color1}--------------------------
+${color2}UPTIME ${alignr}${color3}$uptime_short
+${color1}--------------------------       
+${color2}CPU${alignr}${color3}${cpu cpu0}%
+${color2}RAM${alignr}${color3}$memperc%
+${color2}MEM${alignr}${color3}$mem / $memmax
+${color1}--------------------------
+${color2}TASKS ${alignr}${color3}$running_processes$processes
+${color2}LOAD ${alignr}${color3}$loadavg
+${color1}--------------------------
+${color2}ROOT ${alignr}${color3}${fs_used /}
+${color2}HOME ${alignr}${color3}${fs_used /home}
+${color2}TMPFS ${alignr}${color3}${fs_used /tmp}
+${color1}--------------------------
+${color2}EXTIP${alignr}${color3}${execi 3600 wget -O - http://ip.tupeux.com | tail}
+${color1}--------------------------  
+${color2}SDA-SSD  ${color3}${fs_used_perc /}%${color1}${alignr}${color3}${execi 300 nc localhost 7634 | cut -c34-35}°C
+${color2}SDB-HDD  ${color3}${fs_used_perc /home}%${color1}${alignr}${color3}${execi 300 nc localhost 7634 | cut -c71-72}°C
+${color1}--------------------------            
+${color2}CPU A  ${color3}${cpu cpu0}%${alignr}${color3}${platform coretemp.0 temp 1}°C
+${color2}CPU B  ${color3}${cpu cpu1}%${alignr}${color3}${platform coretemp.0 temp 2}°C
+${color2}CPU C  ${color3}${cpu cpu2}%${alignr}${color3}${platform coretemp.0 temp 3}°C
+${color2}CPU D  ${color3}${cpu cpu3}%${alignr}${color3}${platform coretemp.0 temp 4}°C
+${color1}--------------------------
+${color2}Cpu Fan${alignr}${color3}${platform nct6775.656 fan 1} rpm
+${color2}Top Fan${alignr}${color3}${platform nct6775.656 fan 2} rpm
+${color2}Rear Fan${alignr}${color3}${platform nct6775.656 fan 3} rpm
+${color2}Front Fan${alignr}${color3}${platform nct6775.656 fan 4} rpm
+${color2}Lower Fan${alignr}${color3}${platform nct6775.656 fan 6} rpm
+${color1}--------------------------
+${color2}Voltage 1${alignr}${color3}${platform nct6775.656 in 0} v
+${color2}Voltage 2${alignr}${color3}${platform nct6775.656 in 1} v
+${color2}Voltage 3${alignr}${color3}${platform nct6775.656 in 2} v
+${color2}Voltage 4${alignr}${color3}${platform nct6775.656 in 3} v
+${color1}--------------------------
+${color2}GPU Fan ${alignr}${color3}${execi 5 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} %
+${color2}GPU Temp ${alignr}${color3}${nvidia temp} °C
+${color2}GPU Clock ${alignr}${color3}${nvidia gpufreq} MHz
+${color2}GPU Mem${alignr}${color3}${execi 5 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t}
+
+${image ~/.conky/conky-bg.png -p  -2,2 -s 118x448} 
