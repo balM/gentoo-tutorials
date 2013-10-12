@@ -96,16 +96,16 @@ E. Create conky configuration files
 
   E2. Download conky background image
   # cd /$HOME/.conky
-  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.conky/conky-bg.png
+  # wget https://raw.github.com/ashnbclarke/gentoo-tutorials/master/apps/conky/.conky/conky-bg.png
 
   E3. Download conky primary display font
   # cd /$HOME/.fonts 
-  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.fonts/pftempestafivecondensed.ttf
+  # wget https://raw.github.com/ashnbclarke/gentoo-tutorials/master/apps/conky/.fonts/pftempestafivecondensed.ttf
   ** source :: http://www.dafont.com/pf-tempesta-five.font
 
   E4. Create conky config
   # cd $HOME
-  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.conkyrc
+  # wget https://raw.github.com/ashnbclarke/gentoo-tutorials/master/apps/conky/.conkyrc
   # nano .conkyrc (review:)
   ----------
   alignment top_right
