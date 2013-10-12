@@ -1,0 +1,531 @@
+GENTOO LINUX BASE FINALISATION
+==============================
+
+[ UPDATED TO KERNEL : 3.11.4-gentoo ]
+
+
+Desktop installation
+--------------------
+
+
+64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
+Install and configure an Openbox gtk+2 centric minimal desktop.
+
+This is Part 3 of a 3 part mini-tutorial series on installing Gentoo Linux:
+
+1. Base-Install
+2. Base-Finalisation
+3. Base-Desktop *
+
+
+INSTALL FOCUS
+-------------
+Non UEFI boot setup - Standard BIOS
+Single boot dedicated linux box
+USB keyboard and mouse
+Desktop workstation - no hibernation, suspension or swap file
+Hardware specific install (Z87-A + Haswell Corei7 + >=8GB Ram)
+IPV4 Wired network connection behind a NAT broadband router
+BFQ IO scheduler for both ssd and hdd disks
+Partitionless BTRFS filesystems
+ROOT and HOME BTRFS subvolumes for easy snapshot creation and recovery
+Compile packages in tmpfs tmp directory
+GTK+2 preferred gui (gtk+3 not installed)
+Minimal Openbox based notification free desktop
+
+HARDWARE TARGET
+-------------
+MOTHERBOARD : Asus Z87-A
+INTEL CPU : Corei7 (4770K) 4.core 8.thread 8M 3.50G
+MEMORY : 32 GB 1600MHz DDR3
+SSD : 120 GB SATA (/dev/sda = root filesystem)
+HDD : 1TB 64M SATA 7200RPM (/dev/sdb = home filesystem)
+VIDEO : Asus Nvidia GTX-660 DC2/OC 2G/D5 PCIE
+MONITOR : Viewsonic VG2732m-LED 1920x1080x32 LCD
+PRINTER : HP P2015N Network Printer IP address = 192.168.0.90
+BROADBAND ROUTER : DHCP = disabled, Gateway = 192.168.0.1, wired static IP address = 192.168.0.91
+
+INSTALLATION OVERVIEW
+-------------
+A. As user update system and download Github repository
+B. Update portage with changes needed for a gtk+2 centric desktop.
+C. Setup local overlay "Gentoo-Home".
+D. Update world after use flag changes.
+E. Install miscellaneous tools.
+F. Add new openrc services to the default runlevel.
+G. Install ffmpeg base to satisfy dependencies.
+H. Install and setup sound services.
+I. Install fonts.
+J. Install and configure Xorg and NVidia drivers.
+K. Install Openbox and attending desktop packages.
+L. Expand useful desktop applications.
+M. Install a network printer via a ppd file.
+
+
+
+
+BASE DESKTOP
+------------
+
+A. As user update system and download Github repository
+
+  *NOTE: login as user
+  
+  A1. Update system
+  # sudo eix-sync
+  # sudo emerge -auDN world
+  
+  A2. Download Github repository
+  # sudo mkdir /home/gentoo
+  # sudo chown <user_name>:<user_name> /home/gentoo
+  # cd /home/gentoo
+  # curl -L https://api.github.com/repos/ashnbclarke/gentoo-system/tarball > gentoo-system.tar.gz
+  # tar xzf gentoo-system.tar.gz
+  # rm gentoo-system.tar.gz
+  # mv ashnbclarke* github-root
+  
+  *NOTE: /home/gentoo/github-root is now the source for copying files over to our system from the git repository
+    
+    
+B. Update portage with changes needed for a gtk+2 centric desktop
+
+  B1. Update make.conf
+  # sudo cp /home/gentoo/github-root/etc/portage/make.conf /etc/portage
+  
+  B2. Update portage package files
+  # sudo cp /home/gentoo/github-root/etc/portage/package.use /etc/portage
+  # sudo cp /home/gentoo/github-root/etc/portage/package.mask /etc/portage
+  
+  B3. Enable nvidia-drivers kernel patch
+  # sudo mkdir -p /etc/portage/patches/x11-drivers/nvidia-drivers
+  # sudo cp /home/gentoo/github-root/etc/portage/patches/x11-drivers/nvidia-drivers/linux.patch /etc/portage/patches/x11-drivers/nvidia-drivers
+  # sudo nano /etc/portage/patches/x11-drivers/nvidia-drivers (check kernel version : i.e., 3.11.4-gentoo)
+  ----------
+  +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 4)
+  ----------
+  
+  
+C. Setup local overlay "Gentoo-Home"
+
+  C1. Setup gnome-base/librsvg
+  # sudo mkdir -p /usr/local/portage/gnome-base/librsvg
+  # sudo cp -r /usr/portage/gnome-base/librsvg/files /usr/local/portage/gnome-base/librsvg
+  # sudo cp /home/gentoo/github-root/usr/local/portage/gnome-base/librsvg/librsvg-2.39.0.ebuild /usr/local/portage/gnome-base/librsvg
+  # sudo ebuild /usr/local/portage/gnome-base/librsvg/librsvg-2.39.0.ebuild digest
+
+  C2. Setup media-sound/pavucontrol 
+  # sudo mkdir -p /usr/local/portage/media-sound/pavucontrol
+  # sudo cp /home/gentoo/github-root/usr/local/portage/media-sound/pavucontrol/pavucontrol-1.0.ebuild /usr/local/portage/media-sound/pavucontrol
+  # sudo ebuild /usr/local/portage/media-sound/pavucontrol/pavucontrol-1.0.ebuild digest
+  
+  C2. Setup openshot/openshot
+  # sudo mkdir -p /usr/local/portage/media-video/openshot/
+  # sudo cp /home/gentoo/github-root/usr/local/portage/media-video/openshot/openshot-1.4.3.ebuild /usr/local/portage/media-video/openshot/
+  # sudo ebuild /usr/local/portage/media-video/openshot/openshot-1.4.3.ebuild digest
+  
+  C2.  Setup x11-misc/gsimplecal/gsimplecal
+  # sudo mkdir -p /usr/local/portage/x11-misc/gsimplecal
+  # sudo cp /home/gentoo/github-root/usr/local/portage/x11-misc/gsimplecal/gsimplecal-1.6.ebuild /usr/local/portage/x11-misc/gsimplecal
+  # sudo ebuild /usr/local/portage/x11-misc/gsimplecal/gsimplecal-1.6.ebuild digest
+  
+
+D. Update world after use flag changes
+
+  # sudo emerge -auDN world
+  # sudo etc-update
+  >>>>>>>>>>
+  -7 (discard all updates)
+  >>>>>>>>>>
+  
+
+E. Install miscellaneous tools
+
+  # sudo emerge -a acpid dos2unix dosfstools localepurge p7zip pciutils rar usbutils
+  # sudo nano /etc/locale.nopurge
+  ----------
+  MANDELETE
+  VERBOSE
+  en
+  ----------
+  
+  
+F. Add and start new openrc services to the default runlevel
+
+  # sudo rc-update add acpid default
+  # sudo rc-update add cupsd default
+  # sudo service acpid start
+  # sudo service cupsd start
+  
+
+G. Install ffmpeg base to satisfy dependencies
+
+  *NOTE: totem requires 'ffmpeg' rather than libav
+  *NOTE: totem includes excellent firefox media plugins
+  
+  # sudo USE="-frei0r" emerge -a ffmpeg
+  
+  
+H. Install and setup sound services
+
+  # sudo -a emerge alsa-utils pulseaudio
+  # sudo alsamixer
+  >>>>>>>>>>
+  F5 (display all channels)
+  Unmute ALL muted channels even if unused with 'Shift+M' key combination
+  Mute both S/PDIF channels (if unused)
+  Disable 'Auto-Mute' 
+  Set sound levels on all channels to match your requirements (80%)
+  >>>>>>>>>>
+  # sudo alsactl store
+  # sudo rc-update add alsasound boot
+  # sudo service alsasound start
+  # sudo service dbus restart
+  >>>>>>>>>>
+  [enter]
+  >>>>>>>>>>
+  
+  *NOTE: fix problematic dbus service message above
+  
+  # sudo cp /home/gentoo/github-root/etc/dbus1/system.d/pulseaudio-system.conf /etc/dbus1/system.d/
+  # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:simply removed the name policy)
+  ----------
+  <?xml version="1.0"?>
+  <busconfig><!-- profile removed --></busconfig>
+  ----------
+  
+  
+I. Install fonts
+
+  *NOTE: Infinality manages fonts without the need to manually edit 'eselect fontconfig'
+  *NOTE: Replace 'corefonts' with fonts copied over from your old Windows7/8 installation iso!
+  
+  # sudo emerge -a corefonts dina liberation-fonts opendesktop-fonts (Chinese) ubuntu-font-family
+  
+  
+J. Install and configure Xorg and NVidia drivers
+
+  # sudo emerge -a xorg-server
+  # sudo eselect opengl set [1] (nvidia)
+  # sudo cp /home/gentoo/github-root/etc/X11/xorg.conf /etc/X11
+  # nano /etc/X11/xorg.conf (check monitor data)
+  ----------
+  Section "ServerLayout"
+    Identifier     "Layout0"
+    Screen      0  "Screen0" 0 0
+    Option         "BlankTime" "0"
+    Option         "StandbyTime" "0"
+    Option         "SuspendTime" "0"
+    Option         "OffTime" "0"
+    Option         "Xinerama" "0"
+  EndSection
+
+  Section "Monitor"
+    Identifier     "Monitor0"
+    VendorName     "Viewsonic"
+    ModelName      "ViewSonic VG2732 SERIES"
+    HorizSync       24.0 - 82.0
+    VertRefresh     50.0 - 75.0
+    Option         "DPMS"
+  EndSection
+
+  Section "Device"
+    Identifier     "Device0"
+    Driver         "nvidia"
+    VendorName     "NVIDIA Corporation"
+    BoardName      "GeForce GTX 660"
+    Option         "UseEdidDpi" "False"
+    Option         "DPI" "96 x 96"
+  EndSection
+
+  Section "Screen"
+    Identifier     "Screen0"
+    Device         "Device0"
+    Monitor        "Monitor0"
+    DefaultDepth    24
+    Option         "Stereo" "0"
+    Option         "metamodes" "1920x1080_60 +0+0"
+    Option         "SLI" "Off"
+    Option         "MultiGPU" "Off"
+    Option         "BaseMosaic" "off"
+    SubSection     "Display"
+      Depth       24
+    EndSubSection
+  EndSection
+  ----------
+  
+  
+K. Install Openbox and attending desktop packages
+
+  *NOTE: Ignore CONFIG_SWAP message!
+
+  # sudo emerge -a compton gsimplecal openbox pavucontrol pnmixer tint2 xdg-user-dirs 
+  # sudo emerge -a thunar thunar-archiver-plugin thunar-media-tags-plugin thunar-volman tumbler xfce4-terminal
+  # sudo MAKEOPTS="-j1" emerge -a hsetroot
+  
+
+L. Expand useful desktop applications
+
+  [utilities] # sudo emerge -a evince file-roller geany geany-plugins gconf-editor geany-themes lxtask meld porthole zenity
+  [graphics]  # sudo emerge -a fbgrab gimp gimp-arrow-brushes gimp-gmic gimp-lensfun inkscape ristretto scrot
+  [media]     # sudo emerge -a audacity exaile mediainfo mkvtoolnix openshot totem
+  [network]   # sudo emerge -a adobe-flash filezilla firefox
+              # sudo cp -r /home/gentoo/github-root/usr/share/filezilla/resources/filezilla-faenza-gray (apply the theme from filezilla's gui)
+  [office]    # sudo emerge -a libreoffice
+              # nano /usr/lib64/libreoffice/program/sofficerc
+              ----------
+              Logo=0
+              ----------
+              
+M. Install a network printer via a ppd file
+  
+    M1. Manage cups from the command line (cups-pdf no longer required as 'print-to-file : pdf' is available by default in cups)
+    
+    *NOTE: Check the printers ethernet connection and power. Turn on and allow to settle...
+    
+    # sudo lpadmin -p HPP -E -v socket://192.168.0.90:9100 -P /home/gentoo/github-root/etc/portage/drivers/P2015.ppd
+    
+    M2. Set HP Printer (HPP) as default printer
+    # sudo lpoptions -d HPP
+    
+    M3. Get cups status and individual printer status
+    # sudo lpstat -s
+    # sudo lpstat -p HPP
+  
+  
+N. Install login manager Slim with Gentoo theme
+
+  # sudo emerge -a slim
+  # sudo cp /home/gentoo/github-root/etc/slim.conf /etc
+  # sudo nano /etc/slim.conf (change user name!)
+  ----------
+  default_path        /bin:/usr/bin:/usr/local/bin
+  default_xserver     /usr/bin/X
+  xserver_arguments   -nolisten tcp -br -deferglyphs 16 vt07
+  halt_cmd            /sbin/shutdown -h now
+  reboot_cmd          /sbin/shutdown -r now
+  console_cmd         /usr/bin/xterm -C -fg white -bg black +sb -T "Console login" -e /bin/sh -c "/bin/cat /etc/issue; exec /bin/login"
+  xauth_path          /usr/bin/xauth 
+  authfile            /var/run/slim.auth
+  numlock             off
+  hidecursor          true
+  login_cmd           exec /bin/bash -login /usr/share/slim/Xsession %session
+  sessionstart_cmd    /usr/bin/sessreg -a -l :0.0 %user
+  sessionstop_cmd     /usr/bin/sessreg -d -l :0.0 %user
+  daemon		          yes
+  sessiondir          /etc/X11/Sessions
+  screenshot_cmd      scrot /tmp/slim.png
+  welcome_msg         Gentoo
+  shutdown_msg        Halting...
+  reboot_msg          Rebooting...
+  default_user        <user_name_here>
+  focus_password      yes
+  auto_login          yes
+  current_theme       Cow-Slim
+  lockfile            /var/run/slim.pid
+  logfile             /var/log/slim.log
+  ----------
+  # sudo cp -r /home/gentoo/github-root/usr/share/slim/themes/Cow-Slim  /usr/share/slim/themes
+  # sudo cp /home/gentoo/github-root/etc/env.d/90xsession /etc/env.d
+  # nano /etc/env.d/90xsession (review: sets default session type inherited by slim)
+  ----------
+  XSESSION="openbox"
+  ----------
+  # sudo nano /etc/conf.d/xdm (review: sets slim to launch on boot)
+  ----------
+  CHECKVT=7
+  DISPLAYMANAGER="slim"
+  ----------
+  
+
+O. Install system icons and gtk+ theme
+  
+  O1. System gtk+ theme (based on Crunchbang's Waldorf)
+  # sudo emerge -a gtk-engines-murrine
+  # sudo cp -r /home/gentoo/github-root/usr/share/themes/Waldorf-Mini /usr/share/themes
+  
+  O2. System icon theme (based on Crunchbang's greyish Faenza icon theme)
+  # sudo emerge -a faenza-icon-theme
+  # sudo cp -r /home/gentoo/github-root/usr/share/icons/Faenza-Gray /usr/share/icons
+  
+  O3. Openbox menu icons (taken from Faenza icon theme)
+  # sudo cp -r /home/gentoo/github-root/usr/share/icons/Faenza-Openbox /usr/share/icons
+
+  
+P. Install bash scripts and bash aliases
+
+  # sudo cp -r /home/gentoo/github-root/usr/local/bin/* /usr/local/bin
+  # sudo chmod +x /usr/local/bin/*
+  # sudo cp -r /home/gentoo/github-root/etc/bash/* /etc/bash
+  # sudo nano /etc/bash/bashrc (review:aliases available after reboot/restart)
+  ----------
+  # GENERAL SYSTEM ALIASES
+  alias ls="ls --color=auto"
+  alias ll="ls -lh"
+  alias lls="ls -alh"
+  alias df="df --total -H"
+  alias du="du --total --si"
+  alias ds="du --summarize *"
+  alias sudo="sudo "
+
+  # ROOT ACCESS ALIASES
+  alias nano="sudo nano -c"
+  alias search="sudo updatedb && sudo locate"
+  alias etc-update="sudo etc-update"
+  alias service="sudo service"
+  alias rc-update="sudo rc-update"
+  alias xcp="sudo cp -r"
+
+  # INITTAB VERBOSITY
+  alias inittab-verbose="sudo cp /etc/inittab.verbose /etc/inittab && clear && cat /etc/inittab && echo"
+  alias inittab-silent="sudo cp /etc/inittab.silent /etc/inittab && clear && cat /etc/inittab && echo"
+
+  # FREQUENTLY USED ALIASES
+  alias worldup="nano /var/lib/portage/world"
+  alias useup="sudo quse -D"
+  alias sysup="echo && sudo env-update && source /etc/profile && echo"
+  alias bashup="nano /etc/bash/bashrc && sysup"
+  alias proup="nano /etc/profile"
+
+  # KERNEL ALIASES
+  alias grubup="nano /etc/default/grub && sudo LANG=C grub2-mkconfig -o /boot/grub/grub.cfg"
+  alias modsup="sudo cp /etc/portage/modules/nct6775.ko /lib64/modules/*/kernel/drivers/hwmon"
+  alias kernelup="cd /usr/src/linux && sudo make menuconfig && sudo make -j8 && sudo make modules_install && sleep 5s && sudo make install && sudo touch /boot/fake.old && sudo rm /boot/*.old"
+  alias kernup=" kernelup && modsup && grubup && clear && ls -alh /boot && echo"
+
+  # PORTAGE ALIASES
+  alias makeup="nano /etc/portage/make.conf"
+  alias pkuse="nano /etc/portage/package.use"
+  alias pkmask="nano /etc/portage/package.mask"
+  alias pkunmask="nano /etc/portage/package.unmask"
+  alias pkackey="nano /etc/portage/package.accept_keywords"
+  alias pkkey="nano /etc/portage/package.keywords"
+
+  # EMERGE ALIASES
+  alias em1="sudo emerge --ask --oneshot"
+  alias ema="sudo emerge --ask"
+  alias ems="eix"
+  alias emr="sudo emerge --ask --depclean"
+  alias emu="sudo emerge -auDN world"
+  alias emuf="sudo eix-sync && sudo emerge -auDN world"
+  alias emc="sudo localepurge && sudo emerge -a --depclean && sudo emaint --fix all && sudo eclean-dist -df"
+  alias emf="sudo revdep-rebuild && sudo emerge --ask @preserved-rebuild"
+   
+  # APPLICATION ALIASES
+  alias mounty="mount | column -t"
+  alias temps="sensors && sudo hddtemp /dev/sda /dev/sdb"
+
+  # BTRFS ALIASES
+  alias desnap-root="sudo btrfs subvolume delete /000/*"
+  alias desnap-home="sudo btrfs subvolume delete/home/001/*"
+  alias snap-show="clear && ls -lh /000 && echo && ls -lh /home/001 && echo && sudo btrfs subvolume list / && echo && sudo btrfs subvolume list /home && echo"
+
+  # SCRIPTS (/usr/local/bin)
+  alias new-kernel="new-kernel.sh"
+  alias snap-all="snap-root.sh && snap-home.sh && clear && ls -lh /000 && echo && ls -lh /home/001 && echo && sudo btrfs subvolume list / && echo && sudo btrfs subvolume list /home && echo"
+  alias snap-root="snap-root.sh"
+  alias snap-home="snap-home.sh"
+  alias backup-home="backup-home.sh"
+  alias jdk-download="jdk-download.sh"
+  alias gitup="gitup-system && gitup-tutorial"
+  ----------
+
+
+Q. Prepare use of themes and default applications for users
+
+  # cp -r /home/gentoo/github-root/anbc/.[a-zA-Z0-9]* $HOME
+  # cp -r /home/gentoo/github-root/anbc/* $HOME
+  # rm $HOME/*/.empty
+  # sudo chown <user_name>:<user_name> $HOME/.[a-zA-Z0-9]*
+  # sudo cp $HOME/.gtkrc-2.0 /root
+  # sudo gpasswd -a <user_name> audio,cdrom,video,cdrw,usb,lpadmin
+  
+
+R. Check for use flag changes
+
+  # sudo emerge -auDN world
+  
+  
+S. Reboot and login as user to check OpenRC
+
+  *NOTE: observe that all services are loaded correctly
+  
+  # sudo reboot
+
+  
+T. Change OpenRC boot verbosity and startup type
+
+  T1. Copy inittab varieties to /etc
+  # sudo cp /home/gentoo/github-root/etc/inittab.verbose /etc
+  # sudo cp /home/gentoo/github-root/etc/inittab.silent /etc
+    
+  T2. Set silent boot 
+  # sudo cp /etc/inittab.silent /etc/inittab
+  
+  *NOTE: using installed bash aliases = 'inittab-silent'
+  
+  T3. Set OpenRC to load in parallel by default
+  # sudo cp /home/gentoo/github-root/etc/inittab.verbose /etc
+  # nano /etc/rc.conf (review only)
+  ----------
+  rc_parallel="YES"
+  rc_interactive="NO"
+  rc_shell=/sbin/sulogin
+  unicode="YES"
+  SSD_NICELEVEL="-19"
+  rc_sys=""
+  rc_tty_number=12
+
+  # CGROUPS RESOURCE MANAGEMENT
+  
+  rc_controller_cgroups="YES"
+
+  # per service settings : /etc/conf.d/foo
+  # example: rc_cgroup_cpu="cpu.shares 512"
+
+  rc_cgroup_blkio=""
+  rc_cgroup_cpu=""
+  rc_cgroup_cpuacct=""
+  rc_cgroup_cpuset=""
+  rc_cgroup_devices=""
+  rc_cgroup_memory=""
+  rc_cgroup_net_prio=""
+
+  # manual cleanups: rc-service <service> cgroup_cleanup.
+  rc_cgroup_cleanup="NO"
+  ----------
+  
+
+U. reboot and login as user to check inittab silent boot
+
+
+V. Check and update Slim login manager functionality
+
+  # sudo slim
+  
+  
+    *NOTE: You shoild now be in an Openbox session!
+  
+    Change Openbox Settings:
+    -----------------------
+    
+    Open a terminal from the Right-Click applications menus
+    
+    1. Set slim to load at boot for autologin to Openbox
+    # sudo rc-update add xdm boot
+    
+    2. configure pulseaudio default device
+    # pavucontol
+    >>>>>>>>>>
+    Configuration tab
+      HDMI Controller : Off (on the NVIDIA card)
+      Built-in Audio : Analog Stereo Duplex
+    >>>>>>>>>>
+    
+    Close the terminal
+    
+    Right-click desktop and open 'Manager' (Thunar)
+    In Thunar Right-Click left sidebar 'NETWORK' and untick "Browse network"
+    In Thunar Right-Click each directory and 'Send to' Side Pane (Create Shortcut) for easier navigation
+
+    
+  You now have a fairly complete minimalistic desktop. Reboot or logout from the Exit menu!

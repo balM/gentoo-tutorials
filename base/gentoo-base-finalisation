@@ -338,6 +338,7 @@ O. Create user account
 
 P. Reboot and log back in as user
 
+  # reboot
   # touch .hushlogin
 
 
