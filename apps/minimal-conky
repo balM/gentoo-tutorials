@@ -1,0 +1,217 @@
+GENTOO LINUX MINIMAL CONKY
+=========================
+
+[ UPDATED TO KERNEL : 3.11.4-gentoo ]
+
+Conky is a light-weight system monitor for X, that can display useful hardware information on your desktop. 
+On the Asus Z87-A you can access the coretemp and nct6775 info to monitor motherboard resources as well as hddtemp data, too.
+More generically, you can also monitor the GPU data on your Nvidia graphics card.
+
+
+INSTALL FOCUS
+-------------
+Display hardware monitoring data on your Asus Z87-A desktop with minimal distraction
+** see screenshot of finished conky at: http://linuxz87.wordpress.com/info
+
+INSTALLATION OVERVIEW
+---------------------
+A. Install the necessary software.
+B. Upgrade the nct6775 kernel module to use the Nuvoton NCT6791D SuperIO.
+C. Setup the lm_sensors service.
+D. Setup the hddtemp service.
+E. Create conky configuration files.
+F. Ammend the conky config for your desktop.
+G. Add conky and nvidia-setiings to the openbox autostart file.
+
+
+MINIMAL CONKY
+-------------
+
+A. Install the necessary software
+
+  A1. Globally: 
+  x11-drivers/nvidia-drivers
+  media-video/nvidia-settings
+  sys-apps/lm_sensors
+  app-admin/hddtemp
+  net-analyzer/netcat
+  media-fonts/ubuntu-font-family
+
+  A2. Locally: (see below)
+  $HOME/.fonts/pftempestafivecondensed.ttf
+  $HOME/.conky/conky-bg.png
+  $HOME/.conkyrc
+
+
+B. Upgrade the nct6775 kernel module to use the Nuvoton NCT6791D SuperIO
+
+  B1. Download and build the module
+  # cd /tmp
+  # curl -L https://api.github.com/repos/groeck/nct6775/tarball > groeck.tar.gz
+  # tar xzf groeck.tar.gz
+  # cd groeck-nct6775*/
+  # sed -i 's/linux-headers/linux/g' Makefile
+  # make
+  # sudo cp nct6775.ko /lib64/modules/*/kernel/drivers/hwmon
+  # sudo cp nct6775.ko /etc/portage/modules
+
+
+C. Setup the lm_sensors service
+
+  C1. Autoload the appropriate modules at boot
+  # sudo nano /etc/conf.d/modules
+  ----------
+  modules="hwmon-vid nct6775"
+  ----------
+
+  C2. Configure the lm_sensors service
+  # sudo nano /etc/conf.d/lm_sensors
+  ----------
+  LOADMODULES=no
+  INITSENSORS=yes
+  HWMON_MODULES="coretemp"
+  ----------
+  # sudo rc-update add lm_sensors default
+  
+
+D. Setup the hddtemp service
+
+  D1. Enable hddtemp service for 2 disks (sda and sdb) disks by default
+  # sudo nano /etc/conf.d/hddtemp
+  ----------
+  HDDTEMP_EXEC=/usr/sbin/hddtemp
+  HDDTEMP_OPTS="--listen=127.0.0.1"
+  HDDTEMP_DRIVES="/dev/sda /dev/sdb" 
+  ----------
+
+  D2. Enable the hddtemp service
+  # sudo rc-update add hddtemp default
+
+
+E. Create conky configuration files
+
+  E1. Create necessary directories
+  # cd /$HOME
+  # mkdir .conky .fonts
+
+  E2. Download conky background image
+  # cd /$HOME/.conky
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.conky/conky-bg.png
+
+  E3. Download conky primary display font
+  # cd /$HOME/.fonts 
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.fonts/pftempestafivecondensed.ttf
+  ** source :: http://www.dafont.com/pf-tempesta-five.font
+
+  E4. Create conky config
+  # cd $HOME
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/home/.conkyrc
+  # nano .conkyrc (review:)
+  ----------
+  alignment top_right
+  background yes
+  cpu_avg_samples 2
+  default_color 000000		
+  default_outline_color 000000 	
+  default_shade_color 000000	
+  double_buffer yes
+  draw_borders no
+  draw_graph_borders no
+  draw_outline no
+  draw_shades no
+  gap_x 22
+  gap_y 612
+  max_specials 1024
+  max_user_text 10000
+  maximum_width 100
+  minimum_size 300 400
+  net_avg_samples 2
+  no_buffers yes
+  override_utf8_locale yes
+
+  own_window yes
+  own_window_colour 000000	
+  own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+  own_window_transparent yes
+  own_window_type override 
+
+  pad_percents 2			
+  short_units yes			
+  stippled_borders 3
+  text_buffer_size 8000
+  total_run_times 0
+  update_interval 3.0
+  uppercase no
+  use_spacer right
+  use_xft yes
+  xftalpha 1
+
+  # horizontal line
+  color1 D2D2D2
+  # title
+  color2 9AB7DC
+  # value
+  color3 FFFFFF
+
+  TEXT
+  ${font ubuntu:size=8}${alignr}${color2}gentoo.home${font pftempestafivecondensed:size=6}
+  ${color1}--------------------------
+  ${color2}UPTIME ${alignr}${color3}$uptime_short
+  ${color1}--------------------------       
+  ${color2}CPU${alignr}${color3}${cpu cpu0}%
+  ${color2}RAM${alignr}${color3}$memperc%
+  ${color2}MEM${alignr}${color3}$mem / $memmax
+  ${color1}--------------------------
+  ${color2}TASKS ${alignr}${color3}$running_processes$processes
+  ${color2}LOAD ${alignr}${color3}$loadavg
+  ${color1}--------------------------
+  ${color2}ROOT ${alignr}${color3}${fs_used /}
+  ${color2}HOME ${alignr}${color3}${fs_used /home}
+  ${color2}TMPFS ${alignr}${color3}${fs_used /tmp}
+  ${color1}--------------------------
+  ${color2}EXTIP${alignr}${color3}${execi 3600 wget -O - http://ip.tupeux.com | tail}
+  ${color1}--------------------------  
+  ${color2}SDA-SSD  ${color3}${fs_used_perc /}%${color1}${alignr}${color3}${execi 300 nc localhost 7634 | cut -c34-35}°C
+  ${color2}SDB-HDD  ${color3}${fs_used_perc /home}%${color1}${alignr}${color3}${execi 300 nc localhost 7634 | cut -c71-72}°C
+  ${color1}--------------------------            
+  ${color2}CPU A  ${color3}${cpu cpu0}%${alignr}${color3}${platform coretemp.0 temp 1}°C
+  ${color2}CPU B  ${color3}${cpu cpu1}%${alignr}${color3}${platform coretemp.0 temp 2}°C
+  ${color2}CPU C  ${color3}${cpu cpu2}%${alignr}${color3}${platform coretemp.0 temp 3}°C
+  ${color2}CPU D  ${color3}${cpu cpu3}%${alignr}${color3}${platform coretemp.0 temp 4}°C
+  ${color1}--------------------------
+  ${color2}Cpu Fan${alignr}${color3}${platform nct6775.656 fan 1} rpm
+  ${color2}Top Fan${alignr}${color3}${platform nct6775.656 fan 2} rpm
+  ${color2}Rear Fan${alignr}${color3}${platform nct6775.656 fan 3} rpm
+  ${color2}Front Fan${alignr}${color3}${platform nct6775.656 fan 4} rpm
+  ${color2}Lower Fan${alignr}${color3}${platform nct6775.656 fan 6} rpm
+  ${color1}--------------------------
+  ${color2}Voltage 1${alignr}${color3}${platform nct6775.656 in 0} v
+  ${color2}Voltage 2${alignr}${color3}${platform nct6775.656 in 1} v
+  ${color2}Voltage 3${alignr}${color3}${platform nct6775.656 in 2} v
+  ${color2}Voltage 4${alignr}${color3}${platform nct6775.656 in 3} v
+  ${color1}--------------------------
+  ${color2}GPU Fan ${alignr}${color3}${execi 5 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} %
+  ${color2}GPU Temp ${alignr}${color3}${nvidia temp} °C
+  ${color2}GPU Clock ${alignr}${color3}${nvidia gpufreq} MHz
+  ${color2}GPU Mem${alignr}${color3}${execi 5 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t}
+
+  ${image ~/.conky/conky-bg.png -p  -2,2 -s 118x448} 
+  ----------
+
+
+F. Ammend the conky config for your desktop
+
+  *NOTE: Defaults set for 1920x1080 screen with an nvidia graphics card
+
+    gap_x 22, gap_y 612 : sets position of the display from the right hand upper corner
+
+
+G. Add conky and nvidia-setiings to the openbox autostart file
+
+  # nano /$HOME/.config/openbox/autostart
+  ----------
+  (sleep 1s && conky -d) &
+  ----------
+  
+  
+  Remember to rebuild the nct6775 module after kernel upgrades!
