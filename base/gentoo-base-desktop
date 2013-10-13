@@ -537,8 +537,8 @@ V. Check Slim login manager functionality and update settings
     
 W. Create BTRFS snapshots using aliases and bash scripts    
   
-  Finally, when all is complete, we can create BTRFS snapshots of both the ROOT and HOME subvolumes
-  Run the following command in the open terminal in Openbox as a regular user
+  Finally, when all is complete, we can create BTRFS snapshots of both the ROOT and HOME subvolumes.
+  Run the following command in the open terminal in Openbox as a regular user:
   
   # snap-all
   
