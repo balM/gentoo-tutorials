@@ -69,6 +69,7 @@ S. Reboot and login as user to check OpenRC.
 T. Change OpenRC boot verbosity and startup type.
 U. reboot and login as user to check inittab silent boot.
 V. Check Slim login manager functionality and update settings.
+W. Create BTRFS snapshots using aliases and bash scripts.
 
 
 BASE DESKTOP
@@ -510,7 +511,8 @@ V. Check Slim login manager functionality and update settings
   # sudo slim
   
   
-    *NOTE: You shoild now be in an Openbox session!
+    *NOTE: You should now be in an Openbox session!
+    
   
     Change Openbox Settings:
     -----------------------
@@ -528,11 +530,25 @@ V. Check Slim login manager functionality and update settings
       Built-in Audio : Analog Stereo Duplex
     >>>>>>>>>>
     
-    Close the terminal
-    
-    Right-click desktop and open 'Manager' (Thunar)
-    In Thunar Right-Click left sidebar 'NETWORK' and untick "Browse network"
+    Right-click the desktop and open 'Manager' (Thunar)
+    In Thunar Right-Click the left sidebar 'NETWORK' icon and untick "Browse network"
     In Thunar Right-Click each directory and 'Send to' Side Pane (Create Shortcut) for easier navigation
+    
+    
+W. Create BTRFS snapshots using aliases and bash scripts    
+  
+  Finally, when all is complete, we can create BTRFS snapshots of both the ROOT and HOME subvolumes
+  Run the following command in the open terminal in Openbox as a regular user
+  
+  # snap-all
+  
+  This alias clears any snapshots it finds in the /000 [ROOT] and /home/001 [HOME] snapshot directories.
+  It proceeds to call both the snap-root.sh and snap-home.sh scripts in /usr/local/bin to create BTRFS snapshots of the ROOT and HOME subvolumes.
+  
+  If you'd rather create individual snapshots one at different times then use the following aliases:
+  
+  # snap-root
+  # snap-home
 
     
   You now have a fairly complete minimalistic desktop. Reboot or logout from the Exit menu!
