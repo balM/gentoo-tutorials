@@ -82,7 +82,7 @@ E. Enable 'keychain' to cache your ssh passphrase locally
   ----------
 
 
-F. Test github's ssh connection in  a terminal
+F. Test github's ssh connection in a new terminal
 
   # ssh -T git@github.com
 
