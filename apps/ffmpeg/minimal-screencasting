@@ -56,7 +56,7 @@ B. Create a simple script to start screencasting
   OUTPUT="$HOME/Videos/Screencasts"
   ICON="$HOME/.icons/screencasting.png"
   SIZE="1920x1080"
-  RATE="30000/1001"
+  RATE="30"
   VCODEC="libx264"
   ACODEC="libfaac"
   PIXELS="yuv420p"
