@@ -545,7 +545,7 @@ W. Create BTRFS snapshots using aliases and bash scripts
   This alias clears any snapshots it finds in the /000 [ROOT] and /home/001 [HOME] snapshot directories.
   It proceeds to call both the snap-root.sh and snap-home.sh scripts in /usr/local/bin to create BTRFS snapshots of the ROOT and HOME subvolumes.
   
-  If you'd rather create individual snapshots one at different times then use the following aliases:
+  If you'd rather create individual snapshots at different times then use the following aliases:
   
   # snap-root
   # snap-home
