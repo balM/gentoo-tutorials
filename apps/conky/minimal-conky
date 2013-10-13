@@ -48,7 +48,7 @@ B. Upgrade the nct6775 kernel module to use the Nuvoton NCT6791D SuperIO
   B1. Create a local directory to house the built module between rebuilds for recopying when needed
   # sudo mkdir /etc/portage/module
   
-  *NOTE: when the kernel is updated we need to re-make the module as it builds against both /usr/src/linux-$(TARGET) and /boot/System.map-$(TARGET)
+  *NOTE: obviously, when the kernel is updated we need to re-make the module afresh
 
   B2. Download and build the module
   # cd /tmp
