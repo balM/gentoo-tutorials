@@ -21,7 +21,7 @@ C. Setup the lm_sensors service.
 D. Setup the hddtemp service.
 E. Create conky configuration files.
 F. Ammend the conky config for your desktop.
-G. Add conky and nvidia-setiings to the openbox autostart file.
+G. Add conky and nvidia-settings to the openbox autostart file.
 
 
 MINIMAL CONKY
@@ -206,7 +206,7 @@ F. Ammend the conky config for your desktop
     gap_x 22, gap_y 612 : sets position of the display from the right hand upper corner
 
 
-G. Add conky and nvidia-setiings to the openbox autostart file
+G. Add conky and nvidia-settings to the openbox autostart file
 
   # nano /$HOME/.config/openbox/autostart
   ----------
