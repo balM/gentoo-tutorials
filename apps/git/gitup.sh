@@ -15,9 +15,11 @@ COL_CYAN=$ESC_SEQ"36;01m"
 REPOSITORY="$HOME/Documents/Github/myrepository"
 
 clear
+
 echo
 echo -e "$COL_YELLOW myrepository $COL_RESET"
 echo
+
 cd $REPOSITORY
 git add -A . 
 git add -u 

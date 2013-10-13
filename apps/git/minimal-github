@@ -1,0 +1,210 @@
+GENTOO LINUX MINIMAL GITHUB
+===========================
+
+[ UPDATED TO GIT : 1.8.3.2 ]
+
+Github is a great free resource for sharing snippets of code publically.
+
+If your managing a complex, multi-user git repository then you need to think hard about git's commit 'commenting'; you need to keep track of what's going on - who did what, why, etc.
+However, if it's just you and all you're doing is updating a repository full of bash scripts or config files, as I am here, then committing with the current time and date as your comment seems like a sensible way to go.
+
+
+INSTALL FOCUS
+-------------
+'Commit' and 'Push' from a local git repository to a github online account quickly
+
+INSTALLATION OVERVIEW
+---------------------
+A. Install the necessary software.
+B. Create a new free github account.
+C. Generate an ssh key for accessing your github online account.
+D. Copy the ssh public key to github.
+E. Enable 'keychain' to cache your ssh passphrase locally.
+F. Test github's ssh connection.
+G. Clone your new online github repository back to your local repository directory.
+H. Create a simple github 'commit' and 'push' bash script.
+I. Test set-up by editing README.md locally then committing and pushing to github.
+J. Correcting 'Out-of-Sync' errors.
+
+
+MINIMAL GITHUB
+--------------
+
+A. Install the necessary software
+
+  dev-vcs/git
+  x11-misc/xclip
+  net-misc/openssh
+  net-misc/keychain
+
+
+B. Create a new free github account (or skip ahead if you already have one ...)
+
+  Go to https://github.com/signup/free
+
+  B1. Give your new repo a name
+
+  B2. Provide a description of what you're sharing
+
+  B3. Choose "Public Repository" (free!)
+
+  B4. Choose "Initialize this repository with a README"
+
+  B5. Click "Create Repository"
+
+
+C. Generate an ssh key for accessing your github online account
+
+  ** remember to choose an easy to remember but strong passphrase!!
+
+  # ssh-keygen -t rsa -b 2048 -C "your_github_email_contact@host.com"
+  # xclip -sel clip < $HOME/.ssh/id_rsa.pub
+
+
+D. Copy the ssh public key to github
+
+  D1. Go to your Github Account Settings
+
+  D2. Click "SSH Keys" in the left sidebar
+
+  D3. Click "Add SSH key"
+
+  D4. Click "Add key" and paste the key in from the clipcoard
+
+  D5. Confirm the action by entering your github password (if asked)
+
+
+E. Enable 'keychain' to cache your ssh passphrase locally
+
+  # nano $HOME/.bash_profile
+  ----------
+  eval `keychain --eval --agents ssh -Q --quiet id_rsa`
+  ----------
+
+
+F. Test github's ssh connection in  a terminal
+
+  # ssh -T git@github.com
+
+  //////////output//////////
+  The authenticity of host 'github.com (*.*.*.*)' can't be established.
+  RSA key fingerprint is *****.
+  Are you sure you want to continue connecting (yes/no)? yes
+
+  Warning: Permanently added 'github.com,*.*.*.*' (RSA) to the list of known hosts.
+
+  Hi <myuser_name>! You've successfully authenticated, but GitHub does not provide shell access.
+  //////////output//////////
+
+
+G. Clone your new online github repository back to your local repository directory
+
+  G1. Create a local github directory to contain the local repository
+  # mkdir $HOME/Documents/Github
+
+  G2. Set your git commit defaults - email and name
+  # git config --global user.email "mymail@myhost.com"
+  # git config --global user.name "myusername"
+
+  G3. Clone the on-line repository back to your local github directory
+  # cd $HOME/Documents/Github
+  # git clone git@github.com:myusername/myrepositoryname.git
+
+
+H. Create a simple github 'commit' and 'push' bash script
+
+  # cd $HOME/Documents/
+  # wget https://raw.github.com/ashnbclarke/gentoo-tutorials/master/apps/git/gitup.sh
+  # nano gitup.sh (review: REPOSITORY variable)
+  ----------
+  #!/bin/bash
+
+  # Colors
+  ESC_SEQ="\x1b["
+  COL_RESET=$ESC_SEQ"39;49;00m"
+  COL_RED=$ESC_SEQ"31;01m"
+  COL_GREEN=$ESC_SEQ"32;01m"
+  COL_YELLOW=$ESC_SEQ"33;01m"
+  COL_BLUE=$ESC_SEQ"34;01m"
+  COL_MAGENTA=$ESC_SEQ"35;01m"
+  COL_CYAN=$ESC_SEQ"36;01m"
+
+  ## Quick git commit local changes and push to online account
+
+  REPOSITORY="$HOME/Documents/Github/myrepository"
+
+  clear
+
+  echo
+  echo -e "$COL_YELLOW myrepository $COL_RESET"
+  echo
+
+  cd $REPOSITORY
+  git add -A . 
+  git add -u 
+  git commit -am "`date`" 
+  git push origin master 
+
+  echo
+  echo -e "$COL_MAGENTA myrepository Updated :-) $COL_RESET"
+  echo
+
+  exit 0
+  -------------- 
+  # chmod +x gitup.sh
+  # sudo cp gitup.sh /usr/local/bin
+
+
+I. Test set-up by editing README.md locally then committing and pushing to github
+
+  I1. If you know the 'markdown' language then edit the file directly
+  # cd $HOME/Documents/Github/myrepository
+  # nano README.md
+  ----------
+  ## TITLE
+  _Sub Title : Info much_
+
+  [link.domain.com]
+
+  [link.domain.com]: http://link.domain.com/
+  ----------
+
+  I2. If unfamiliar with 'markdown' visit an online markdown editor
+
+    *NOTE: Go to http://www.ctrlshift.net/project/markdowneditor
+
+  I3. Run 'gitup.sh' in a terminal to commit the README.md file change and push online to github
+  # gitup.sh
+
+  //////////output//////////
+  
+  myrepository
+  
+    [master *] <date>
+
+    << details of changes >>
+
+    master -> master
+
+  GitHub Tutorials Updated :-) 
+
+  //////////output//////////
+
+  I4. Simply run 'gitup.sh' in a terminal whenever changes need committing and pushing online
+
+
+J. Correcting 'Out-of-Sync' errors
+
+  J1. If you edit your github files online via your web browser your online repository skips 'ahead' of your local repository
+
+  J2. Correct this error 'simply' by re-fetching the online repository from github then local and online repositories are again in sync
+  
+  *NOTE: suggestion : avoid online web browser github file editing for this simple 'dotfile' usage scenario
+  
+  # cd $HOME/Documents/Github
+  # mv myrepository myrepository-old
+  # git clone git@github.com:myusername/myrepository.git
+  # rm -Rf myrepository-old
+
+
+  You have about 1G of space on a free account - enjoy :-)
