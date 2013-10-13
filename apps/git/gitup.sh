@@ -18,9 +18,9 @@ clear
 
 echo
 echo -e "$COL_YELLOW myrepository $COL_RESET"
-echo
 
 cd $REPOSITORY
+echo
 git add -A . 
 git add -u 
 git commit -am "`date`" 
