@@ -1,7 +1,7 @@
 GENTOO LINUX BASE INSTALL
 =========================
 
-[ UPDATED TO KERNEL : 3.11.4-gentoo ]
+[ UPDATED TO KERNEL : 3.11.5-gentoo ]
 
 
 From chroot to first boot
@@ -363,7 +363,7 @@ L. Install the gentoo-sources kernel
   * NOTE: as no swap file or partition is required in this setup paging is disabled in this kernel
 
   # emerge gentoo-sources
-  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.4-gentoo -P /usr/src/linux/.config
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.5-gentoo -P /usr/src/linux/.config
   # cd /usr/src/linux
   # make menuconfig (check through configuration, then press 'Esc' key twice and answer yes to save)
   # make -j8
