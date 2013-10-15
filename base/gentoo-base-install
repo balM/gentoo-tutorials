@@ -172,7 +172,7 @@ H. Install an amd64 stage3 tarball
   http://www.gentoo.org/main/en/mirrors2.xml  -> example JAPAN :  http://ftp.jaist.ac.jp/pub/Linux/Gentoo/releases/amd64/current-stage3/stage3-amd64-<date>.tar.bz2
 
   # cd /mnt/gentoo
-  # wget  http://ftp.jaist.ac.jp/pub/Linux/Gentoo/releases/amd64/current-stage3/stage3-amd64-<date>.tar.bz2
+  # wget http://ftp.jaist.ac.jp/pub/Linux/Gentoo/releases/amd64/current-stage3/stage3-amd64-<date>.tar.bz2
   # tar xjpf stage3-*.tar.bz2
   # rm stage3-*.tar.bz2
   # cd /
@@ -199,7 +199,9 @@ J. Configure portage
   # emerge --sync --quiet
   # eselect news list
   # eselect news read
-  # nano /etc/portage/make.conf
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.chroot  -P /tmp
+  # mv /tmp/make.conf.chroot /etc/portage/make.conf
+  # nano /etc/portage/make.conf (review)
   ----------
   # Build-time functionality 
   # ======================== 
@@ -263,13 +265,15 @@ J. Configure portage
   GRUB_PLATFORMS="pc"
   ALSA_CARDS="hda-intel" 
   --------------
-  !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.chroot  -P /tmp
-  --------------  
-  # mv /tmp/make.conf.chroot /etc/portage/make.conf
   # mkdir -p /usr/local/portage/profiles
   # nano /usr/local/portage/profiles/repo_name
   ----------
   gentoo-home
+  ----------
+  # mkdir -p /usr/local/portage/metadata
+  # nano /usr/local/portage/metadata/layout.conf
+  ----------
+  masters = gentoo
   ----------
 
 
@@ -320,7 +324,9 @@ K. Setup system files
   # rc-update add conslefont boot
 
   K6. Setup inittab to show init messages during the setup and finalisation phases
-  # nano /etc/inittab
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /tmp  
+  # mv /tmp/inittab.verbose.chroot /etc/inittab
+  # nano /etc/inittab (review)
   ----------  
   id:3:initdefault:
   si::sysinit:/sbin/rc sysinit
@@ -341,9 +347,6 @@ K. Setup system files
   ca:12345:ctrlaltdel:/sbin/shutdown -r now
   x:a:once:/etc/X11/startDM.sh
   --------------  
-  !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /tmp
-  --------------  
-  # mv /tmp/inittab.verbose.chroot /etc/inittab
 
   K7. Setup system services
   # nano /etc/rc.conf
@@ -363,7 +366,8 @@ L. Install the gentoo-sources kernel
   * NOTE: as no swap file or partition is required in this setup paging is disabled in this kernel
 
   # emerge gentoo-sources
-  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.5-gentoo -P /usr/src/linux/.config
+  # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.5-gentoo -P /tmp
+  # sudo mv /tmp/config-3.11.5-gentoo /usr/src/linux/.config
   # cd /usr/src/linux
   # make menuconfig (check through configuration, then press 'Esc' key twice and answer yes to save)
   # make -j8
@@ -413,13 +417,11 @@ P. Install the Grub2 bootloader
   # cd /etc/grub.d
   # rm 2* 3* 4* R*
 
-  OPTIONAL: decrease grub boot verbosity - comment out 2 "echo" lines around 123 and 130
-  # nano -c 10*
-  ----------
-  #echo  '$(echo "$message" | grub_quote)'
-  --------------
-  !! QUICKGET !! :: wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/grub.d/10_linux -P /etc/grub.d
-  --------------
+    OPTIONAL: decrease grub boot verbosity - comment out 2 "echo" lines around 123 and 130
+    # nano -c 10*
+    ----------
+    #echo  '$(echo "$message" | grub_quote)'
+    --------------
 
   # nano /etc/default/grub
   ----------

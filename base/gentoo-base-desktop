@@ -195,7 +195,7 @@ H. Install and setup sound services
   *NOTE: fix problematic dbus service message above
   
   # sudo cp /home/gentoo/github-root/etc/dbus1/system.d/pulseaudio-system.conf /etc/dbus1/system.d/
-  # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:simply removed the name policy)
+  # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:the name policy is simply removed)
   ----------
   <?xml version="1.0"?>
   <busconfig><!-- profile removed --></busconfig>
@@ -286,18 +286,18 @@ L. Expand useful desktop applications
               
 M. Install a network printer via a ppd file
   
-    M1. Manage cups from the command line (cups-pdf no longer required as 'print-to-file : pdf' is available by default in cups)
-    
-    *NOTE: Check the printers ethernet connection and power. Turn on and allow to settle...
-    
-    # sudo lpadmin -p HPP -E -v socket://192.168.0.90:9100 -P /home/gentoo/github-root/etc/portage/drivers/P2015.ppd
-    
-    M2. Set HP Printer (HPP) as default printer
-    # sudo lpoptions -d HPP
-    
-    M3. Get cups status and individual printer status
-    # sudo lpstat -s
-    # sudo lpstat -p HPP
+  M1. Manage cups from the command line (cups-pdf no longer required as 'print-to-file : pdf' is available by default in cups)
+
+  *NOTE: Check the printers ethernet connection and power. Turn on and allow to settle...
+
+  # sudo lpadmin -p HPP -E -v socket://192.168.0.90:9100 -P /home/gentoo/github-root/etc/portage/drivers/P2015.ppd
+
+  M2. Set HP Printer (HPP) as default printer
+  # sudo lpoptions -d HPP
+
+  M3. Get cups status and individual printer status
+  # sudo lpstat -s
+  # sudo lpstat -p HPP
   
   
 N. Install login manager Slim with Gentoo theme
@@ -474,7 +474,7 @@ T. Change OpenRC boot verbosity and startup type
   
   T3. Set OpenRC to load in parallel by default
   # sudo cp /home/gentoo/github-root/etc/inittab.verbose /etc
-  # nano /etc/rc.conf (review only)
+  # nano /etc/rc.conf (review)
   ----------
   rc_parallel="YES"
   rc_interactive="NO"
