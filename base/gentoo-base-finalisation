@@ -123,8 +123,8 @@ C. Update make.conf with use flags ready for system optimisation
 
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/make.conf.finalisation -P /tmp
   # mv /tmp/make.conf.finalisation /etc/portage/make.conf
-
-
+  
+  
 D. Install Oracle JDK as default java vm
 
   D1. Download oracle-jdk-bin fetch restricted sources
@@ -365,10 +365,9 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
   # mount /dev/sda /mnt/backup
   # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
   # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
-  # btrfs subvolume delete /mnt/backup/ROOT-old/000/root-test-snapshot
   # btrfs subvolume delete /mnt/ROOT-old/
-  # sudo btrfs subvolume list /mnt
-  # umount /mnt
+  # btrfs subvolume list /mnt/backup
+  # umount /mnt/backup
   # reboot (remove live usb)
 
 
