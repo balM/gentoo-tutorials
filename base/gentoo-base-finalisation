@@ -365,7 +365,7 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
   # mount /dev/sda /mnt/backup
   # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
   # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
-  # btrfs subvolume delete /mnt/ROOT-old/
+  # btrfs subvolume delete /mnt/backup/ROOT-old/
   # btrfs subvolume list /mnt/backup
   # umount /mnt/backup
   # reboot (remove live usb)
