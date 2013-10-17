@@ -59,7 +59,7 @@ I. Install and setup dnsmasq and macchanger.
 j. Enable/Disable standard openrc services.
 K. Configure eselect defaults and config files.
 L. Configure Infinality fonts.
-M. Improve nano filetype recognition.
+M. Improve nano filetype recognition and simplify interface.
 N. Configure sudo for users.
 O. Create user account.
 P. Reboot and log back in as user.
@@ -70,8 +70,8 @@ R. Replace the current subvolume with a snapshot [RECOVERY].
 BASE FINALISATION
 -------------
 
-* NOTE: Ignore all 'etc-updates' and 'eselect news read' until the end of the tutorial
-* NOTE: Ignore all '!!! existing preserved libs found' messages - this will be dealt with in due course
+  * NOTE: Ignore all 'etc-updates' and 'eselect news read' warnings until the end of the tutorial
+  * NOTE: Ignore all '!!! existing preserved libs found' messages - this will be dealt with in due course
 
 A. Update system prior to optimisation
 
@@ -83,7 +83,7 @@ A. Update system prior to optimisation
 
   A3. Update portage masks and use package definitions
 
-  # NOTE: avoid known update caveats when upgrading from amd64 to ~amd64
+  # NOTE: avoid known update caveats when upgrading from amd64 to ~amd64 with these use flag definitions
 
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/package.mask.finalisation -P /tmp
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/portage/package.use.finalisation -P /tmp
@@ -115,6 +115,8 @@ B. Update GCC default compiler
   # gcc-config -l
   # gcc-config (n) (where n=latest gcc version)
   # gcc-config -l (check latest gcc version is now active)
+  # env-update 
+  # source /etc/profile
   # emerge -a1 libtool
   # emerge -a @preserved-rebuild
 
@@ -147,28 +149,28 @@ E. Update portage to use python3
 
 F. Rebuild an optimised world system (cautious approach!)
 
-  *Note: When doing multiple package rebuilds downloading app sources beforehand is a good idea!
+  *Note: When doing multiple package rebuilds downloading app sources beforehand is a good idea - just in case a download gets stalled!
 
   F1. Rebuild GCC with new optimised cflags and gcj support    
-  # emerge -a1 gcc
+  # emerge -a1 gcc (compile time = 14mins)
 
   F2. Download and rebuild system for changed useflags
-  # emerge -afuDN system
-  # emerge -auDN system
+  # emerge -afuDN system (download all sources first)
+  # emerge -auDN system (then rebuild)
 
-  F3. Download and rebuild all packages (not strictly needed, but well worth the clean start)
+  F3. Download and rebuild all packages (not strictly needed, but well worth the clean start in my opinion!)
   # emerge -afe world
   # emerge -ae world
 
-  !! go make a cup of coffee while your system rebuilds! (estimate = 60 mins)
+  !! go make a cup of coffee while your system rebuilds! (compile time = 60-80mins)
 
 
 G. Install the realtek 8111GR Gigabit Lan controller firmware
 
-  G1. Install firmware package
+  G1. Install the generic all-inclusive firmware package
   # emerge -a linux-firmware
 
-  G2. Edit the list of firmware to load at boot (only one firmware required for asus-Z87-A)
+  G2. Edit the list of firmware to load at boot (only one firmware required for the Asus Z87-A)
   # rm /etc/portage/savedconfig/sys-kernel/linux-firmware-<date>
   # echo "rtl_nic/rtl8168g-2.fw" > /etc/portage/savedconfig/sys-kernel/linux-firmware-<date>
 
@@ -205,7 +207,7 @@ H. Reconfigure the upgraded network system using iproute2
   defaultiproute="via 192.168.0.1"
   ----------
 
-  H7. Update the network service to run at boot
+  H7. Update the network service to run at boot and restart the network
   # rc-update add network default
   # service start network
 
@@ -218,13 +220,14 @@ I. Install and setup dnsmasq and macchanger
   I2. Enable dnsmasq DNS caching
   # rm nano /etc/dnsmasq.conf
   # echo "listen-address=127.0.0.1" > /etc/dnsmasq.conf
-  # nano /etc/resolv..conf
+  # nano /etc/resolv.conf
   ----------
   127.0.0.1
   nameserver 8.8.8.8
   nameserver 8.8.4.4
   ----------
   # rc-update add dnsmasq default
+  # service dnsmasq start
 
   I3. Install macchanger (Ethernet card MAC address Changer)
   # emerge -a macchanger
@@ -233,6 +236,12 @@ I. Install and setup dnsmasq and macchanger
   macchanger -Abr enp3s0 >> /dev/null
   ----------
   # chmod +x /etc/local.d/startup.start
+  
+  I4. Test local DNS caching
+  # dig gentoo.org | grep "Query time"
+  ;; Query time: *** msec
+  # dig gentoo.org | grep "Query time"
+  ;; Query time: 0 msec
 
 
 j. Enable/Disable standard openrc services
@@ -303,7 +312,7 @@ L. Configure Infinality fonts
   # cd /etc/fonts/conf.d
   # rm *
 
-  L2. Replace fontconfig with Infinality single solution
+  L2. Replace removed configs with the Infinality single solution config
   # ln -s ../conf.avail/52-infinality.conf
 
   L3. Check Infinality fontconfig settings (only one alias should be active *)
@@ -313,7 +322,7 @@ L. Configure Infinality fonts
   >>>>>>>>>>
 
 
-M. Improve nano filetype recognition
+M. Improve nano filetype recognition and simplify interface
 
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/nanorc -P /tmp
   # mv /tmp/nanorc /etc
@@ -321,7 +330,7 @@ M. Improve nano filetype recognition
 
 N. Configure sudo for users
 
-  *NOTE: NOPASSWD can be later removed if working in a multi-user environment
+  *NOTE: NOPASSWD can be later removed after desktop completion if working in a multi-user environment
 
   # visudo
   ----------
@@ -338,7 +347,7 @@ O. Create user account
 
 P. Reboot and log back in as user
 
-  # reboot
+  # reboot (enables you to check that all OpenRC boot changes have implemented correctly)
   # touch .hushlogin
 
 
@@ -353,7 +362,7 @@ Q. Create a btrfs snapshot of finalised base installation
   # ls -alh /000
   # sudo btrfs subvolume list /
 
-  Q3. To delete old snaphots if and when no longer needed
+  Q3. To delete old snaphots if and when they are no longer needed
   # sudo btrfs subvolume delete /000/root-test-snapshot
 
 
@@ -361,7 +370,7 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
 
   R1. Boot from the systemrescuecd live usb
 
-  R2. Mount the drive containing the ROOT subvolume to the live usb's /backup directory
+  R2. Mount the drive containing the ROOT subvolume to the live usb's existing /backup directory
   # mount /dev/sda /mnt/backup
   # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
   # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
