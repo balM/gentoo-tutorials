@@ -389,7 +389,7 @@ M. Install base system packages
   # emerge btrfs-progs
 
 
-  N. Setup the static ethernet network
+N. Setup the static ethernet network
 
   # cd /etc/init.d
   # ln -s net.lo net.enp3s0
@@ -417,11 +417,11 @@ P. Install the Grub2 bootloader
   # cd /etc/grub.d
   # rm 2* 3* 4* R*
 
-    OPTIONAL: decrease grub boot verbosity - comment out 2 "echo" lines around 123 and 130
-    # nano -c 10*
-    ----------
-    #echo  '$(echo "$message" | grub_quote)'
-    --------------
+  decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
+  # nano -c 10*
+  ----------
+  #echo  '$(echo "$message" | grub_quote)'
+  --------------
 
   # nano /etc/default/grub
   ----------
