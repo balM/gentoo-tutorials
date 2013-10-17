@@ -52,13 +52,13 @@ B. Update portage with changes needed for a gtk+2 centric desktop.
 C. Setup local overlay "Gentoo-Home".
 D. Update world after use flag changes.
 E. Install miscellaneous tools.
-F. Add new openrc services to the default runlevel.
+F. Add new openrc services to the default runlevel and start services.
 G. Install ffmpeg base to satisfy dependencies.
 H. Install and setup sound services.
 I. Install fonts.
 J. Install and configure Xorg and NVidia drivers.
 K. Install Openbox and attending desktop packages.
-L. Expand useful desktop applications.
+L. Expand your cache of useful desktop applications.
 M. Install a network printer via a ppd file.
 N. Install login manager Slim with Gentoo theme.
 O. Install system icons and gtk+ theme.
@@ -67,7 +67,7 @@ Q. Prepare use of themes and default applications for users.
 R. Check for use flag changes.
 S. Reboot and login as user to check OpenRC.
 T. Change OpenRC boot verbosity and startup type.
-U. reboot and login as user to check inittab silent boot.
+U. Reboot and login as user to check OpenRC in silent boot mode.
 V. Check Slim login manager functionality and update settings.
 W. Create BTRFS snapshots using aliases and bash scripts.
 
@@ -92,7 +92,7 @@ A. As user update system and download Github repository
   # rm gentoo-system.tar.gz
   # mv ashnbclarke* github-root
   
-  *NOTE: /home/gentoo/github-root is now the source for copying files over to our system from the git repository
+  *NOTE: /home/gentoo/github-root is now the source for copying files over to our system from the downloaded git repository
     
     
 B. Update portage with changes needed for a gtk+2 centric desktop
@@ -100,7 +100,7 @@ B. Update portage with changes needed for a gtk+2 centric desktop
   B1. Update make.conf
   # sudo cp /home/gentoo/github-root/etc/portage/make.conf /etc/portage
   
-  B2. Update portage package files
+  B2. Update portage package mask and use files
   # sudo cp /home/gentoo/github-root/etc/portage/package.use /etc/portage
   # sudo cp /home/gentoo/github-root/etc/portage/package.mask /etc/portage
   
@@ -157,7 +157,7 @@ E. Install miscellaneous tools
   ----------
   
   
-F. Add and start new openrc services to the default runlevel
+F. Add new openrc services to the default runlevel and start services
 
   # sudo rc-update add acpid default
   # sudo rc-update add cupsd default
@@ -167,8 +167,9 @@ F. Add and start new openrc services to the default runlevel
 
 G. Install ffmpeg base to satisfy dependencies
 
-  *NOTE: totem requires 'ffmpeg' rather than libav
-  *NOTE: totem includes excellent firefox media plugins
+  *NOTE: Regarding the choice between ffmpeg and libav.
+  I still prefer ffmpeg to libav due to ffmpeg's inclusion of FFTOOLS (i.e., -mov faststart)
+  Totem:2, which requires 'ffmpeg' rather than libav, is chosen over media-video/parole because of its excellent media browser plugins.
   
   # sudo USE="-frei0r" emerge -a ffmpeg
   
@@ -192,7 +193,7 @@ H. Install and setup sound services
   [enter]
   >>>>>>>>>>
   
-  *NOTE: fix problematic dbus service message above
+  *NOTE: fix problematic dbus service message received after restarting dbus (as above)
   
   # sudo cp /home/gentoo/github-root/etc/dbus1/system.d/pulseaudio-system.conf /etc/dbus1/system.d/
   # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:the name policy is simply removed)
@@ -205,9 +206,9 @@ H. Install and setup sound services
 I. Install fonts
 
   *NOTE: Infinality manages fonts without the need to manually edit 'eselect fontconfig'
-  *NOTE: Replace 'corefonts' with fonts copied over from your old Windows7/8 installation iso!
+  *SUGGESTION: Replace 'corefonts' with fonts copied over manually from your old Windows7/8 installation iso!
   
-  # sudo emerge -a corefonts dina liberation-fonts opendesktop-fonts (Chinese) ubuntu-font-family
+  # sudo emerge -a corefonts dina liberation-fonts opendesktop-fonts (for extra Chinese fonts) ubuntu-font-family
   
   
 J. Install and configure Xorg and NVidia drivers
@@ -215,7 +216,7 @@ J. Install and configure Xorg and NVidia drivers
   # sudo emerge -a xorg-server
   # sudo eselect opengl set [1] (nvidia)
   # sudo cp /home/gentoo/github-root/etc/X11/xorg.conf /etc/X11
-  # nano /etc/X11/xorg.conf (check monitor data)
+  # nano /etc/X11/xorg.conf (check monitor and device data for your hardware changes)
   ----------
   Section "ServerLayout"
     Identifier     "Layout0"
@@ -264,21 +265,23 @@ J. Install and configure Xorg and NVidia drivers
   
 K. Install Openbox and attending desktop packages
 
-  *NOTE: Ignore CONFIG_SWAP message!
+  *NOTE: Ignore CONFIG_SWAP message! (we have no need for swap)
 
   # sudo emerge -a compton gsimplecal openbox pavucontrol pnmixer tint2 xdg-user-dirs 
   # sudo emerge -a thunar thunar-archiver-plugin thunar-media-tags-plugin thunar-volman tumbler xfce4-terminal
   # sudo MAKEOPTS="-j1" emerge -a hsetroot
   
 
-L. Expand useful desktop applications
+L. Expand your cache of useful desktop applications
+
+  *NOTE: Checkout this Gimp batch file GUI after you finish this tutorial: http://www.alessandrofrancesconi.it/projects/bimp (can't live without it!)
 
   [utilities] # sudo emerge -a evince file-roller geany geany-plugins gconf-editor geany-themes lxtask meld porthole zenity
   [graphics]  # sudo emerge -a fbgrab gimp gimp-arrow-brushes gimp-gmic gimp-lensfun inkscape ristretto scrot
   [media]     # sudo emerge -a audacity exaile mediainfo mkvtoolnix openshot totem
   [network]   # sudo emerge -a adobe-flash filezilla firefox
-              # sudo cp -r /home/gentoo/github-root/usr/share/filezilla/resources/filezilla-faenza-gray (apply the theme from filezilla's gui)
-  [office]    # sudo emerge -a libreoffice
+              # sudo cp -r /home/gentoo/github-root/usr/share/filezilla/resources/filezilla-faenza-gray (apply the theme later from filezilla's gui)
+  [office]    # sudo emerge -a libreoffice (compile time: 38mins)
               # nano /usr/lib64/libreoffice/program/sofficerc
               ----------
               Logo=0
@@ -286,7 +289,7 @@ L. Expand useful desktop applications
               
 M. Install a network printer via a ppd file
   
-  M1. Manage cups from the command line (cups-pdf no longer required as 'print-to-file : pdf' is available by default in cups)
+  M1. Manage cups from the command line (cups-pdf is no longer required as 'print-to-file : pdf' is available by default in cups)
 
   *NOTE: Check the printers ethernet connection and power. Turn on and allow to settle...
 
@@ -300,7 +303,7 @@ M. Install a network printer via a ppd file
   # sudo lpstat -p HPP
   
   
-N. Install login manager Slim with Gentoo theme
+N. Install login manager Slim with a simple Gentoo Cow theme
 
   # sudo emerge -a slim
   # sudo cp /home/gentoo/github-root/etc/slim.conf /etc
@@ -344,6 +347,8 @@ N. Install login manager Slim with Gentoo theme
   DISPLAYMANAGER="slim"
   ----------
   
+  *NOTE: We are going to test this setup BEFORE adding xdm to the default run leve!
+  
 
 O. Install system icons and gtk+ theme
   
@@ -352,7 +357,7 @@ O. Install system icons and gtk+ theme
   # sudo cp -r /home/gentoo/github-root/usr/share/themes/Waldorf-Mini /usr/share/themes
   
   O2. System icon theme (based on Crunchbang's greyish Faenza icon theme)
-  # sudo emerge -a faenza-icon-theme
+  # sudo emerge -a faenza-icon-theme (this contains all the major icon files and is inherited by Faenza-Gray)
   # sudo cp -r /home/gentoo/github-root/usr/share/icons/Faenza-Gray /usr/share/icons
   
   O3. Openbox menu icons (taken from Faenza icon theme)
@@ -449,7 +454,7 @@ Q. Prepare use of themes and default applications for users
   # sudo gpasswd -a <user_name> audio,cdrom,video,cdrw,usb,lpadmin
   
 
-R. Check for use flag changes
+R. Check for ffmpeg use flag changes
 
   # sudo emerge -auDN world
   
@@ -470,10 +475,10 @@ T. Change OpenRC boot verbosity and startup type
   T2. Set silent boot 
   # sudo cp /etc/inittab.silent /etc/inittab
   
-  *NOTE: using installed bash aliases = 'inittab-silent'
+  *NOTE: using installed bash aliases = [ # inittab-silent ]
   
   T3. Set OpenRC to load in parallel by default
-  # sudo cp /home/gentoo/github-root/etc/inittab.verbose /etc
+  # sudo cp /home/gentoo/github-root/etc/rc.conf /etc
   # nano /etc/rc.conf (review)
   ----------
   rc_parallel="YES"
@@ -504,7 +509,9 @@ T. Change OpenRC boot verbosity and startup type
   ----------
   
 
-U. reboot and login as user to check inittab silent boot
+U. Reboot and login as user to check OpenRC in silent boot mode
+
+  *NOTE: The boot messages are now hidden. You can toggle back to verbose mode if you encounter errors.
 
 
 V. Check Slim login manager functionality and update settings
@@ -518,22 +525,22 @@ V. Check Slim login manager functionality and update settings
     Change Openbox Settings:
     -----------------------
     
-    Open a terminal from the Right-Click applications menus
+    Open a terminal from the Right-Click applications menu
     
-    1. Set slim to load at boot for autologin to Openbox
+    1. Set slim to load at boot for autologin to Openbox now that it has been tested!
     # sudo rc-update add xdm boot
     
-    2. configure pulseaudio default device
+    2. configure the pulseaudio default output device
     # pavucontol
     >>>>>>>>>>
     Configuration tab
-      HDMI Controller : Off (on the NVIDIA card)
+      HDMI Controller : Off (unused HDMI port on the NVIDIA card)
       Built-in Audio : Analog Stereo Duplex
     >>>>>>>>>>
     
-    Right-click the desktop and open 'Manager' (Thunar)
-    In Thunar Right-Click the left sidebar 'NETWORK' icon and untick "Browse network"
-    In Thunar Right-Click each directory and 'Send to' Side Pane (Create Shortcut) for easier navigation
+    Right-click the desktop and open 'Manager' (an alias for the default File Manager - Thunar)
+    In Thunar Right-Click the left sidebar 'NETWORK' icon and untick "Browse network" (use ftp and filezilla client/server rather than Samba to browse local home network)
+    In Thunar Right-Click each directory (Backups, Documents, Downloads, Music and Videos) and 'Send to' Side Pane (Create Shortcut) for easier navigation
     
     
 W. Create BTRFS snapshots using aliases and bash scripts    
