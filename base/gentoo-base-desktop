@@ -196,7 +196,7 @@ H. Install and setup sound services
   *NOTE: fix problematic dbus service message received after restarting dbus (as above)
   
   # sudo cp /home/gentoo/github-root/etc/dbus1/system.d/pulseaudio-system.conf /etc/dbus1/system.d/
-  # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:the name policy is simply removed)
+  # nano /etc/dbus1/system.d/pulseaudio-system.conf (review:name policy removed)
   ----------
   <?xml version="1.0"?>
   <busconfig><!-- profile removed --></busconfig>
