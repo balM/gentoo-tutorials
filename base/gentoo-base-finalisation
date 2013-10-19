@@ -175,6 +175,7 @@ G. Install the realtek 8111GR Gigabit Lan controller firmware
   *NOTE: Portage will use this generic 'linux-firmware' config file each time it upgrades the linux-firmware-<date> package
   # rm /etc/portage/savedconfig/sys-kernel/linux-firmware-*
   # echo "rtl_nic/rtl8168g-2.fw" > /etc/portage/savedconfig/sys-kernel/linux-firmware
+  # emerge -a linux-firmware (notice that portage uses the generic "linux-firmware" config to generate a specific version "linux-firmware-<date>" config file)
 
 
 H. Reconfigure the upgraded network system using iproute2
