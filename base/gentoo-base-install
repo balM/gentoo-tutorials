@@ -415,10 +415,10 @@ P. Install the Grub2 bootloader
 
   P2. Configure grub for a silent boot
   # cd /etc/grub.d
-  # rm 2* 3* 4* R*
+  # rm 20_linux_xen 30_os-prober 40_custom 41_custom README
 
   P3. Decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
-  # nano -c 10*
+  # nano -c 10-linux
   ----------
   #echo  '$(echo "$message" | grub_quote)'
   --------------
