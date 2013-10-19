@@ -65,7 +65,7 @@ O. Install system icons and gtk+ theme.
 P. Install bash scripts and bash aliases.
 Q. Prepare use of themes and default applications for users.
 R. Rebuild ffmpeg with unrestricted use flags.
-S. Reboot and login as user to check OpenRC.
+S. Reboot and login as user to check OpenRC functionality.
 T. Change OpenRC boot verbosity and startup type.
 U. Reboot and login as user to check OpenRC in silent boot mode.
 V. Check Slim login manager functionality and update settings.
@@ -470,7 +470,7 @@ R. Rebuild ffmpeg with unrestricted use flags
   # sudo emerge -a ffmpeg
   
   
-S. Reboot and login as user to check OpenRC
+S. Reboot and login as user to check OpenRC functionality
 
   *NOTE: observe that all services are loaded correctly
   
@@ -479,14 +479,12 @@ S. Reboot and login as user to check OpenRC
   
 T. Change OpenRC boot verbosity and startup type
 
-  T1. Copy inittab varieties to /etc
+  T1. Copy inittab verbose and quiet configs to /etc
   # sudo cp /home/gentoo/github-root/etc/inittab.verbose /etc
   # sudo cp /home/gentoo/github-root/etc/inittab.silent /etc
     
-  T2. Set silent boot 
+  T2. Set inittab to silent boot 
   # sudo cp /etc/inittab.silent /etc/inittab
-  
-  *NOTE: using installed bash aliases = [ # inittab-silent ]
   
   T3. Set OpenRC to load in parallel by default
   # sudo cp /home/gentoo/github-root/etc/rc.conf /etc
