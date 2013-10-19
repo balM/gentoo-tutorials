@@ -83,9 +83,9 @@ A. As user update system and download Github repository
   # sudo eix-sync
   # sudo emerge -auDN world
   
-  A2. Download Github repository
+  A2. Download Github repository (replace <user> with your user name)
   # sudo mkdir /home/gentoo
-  # sudo chown <user_name>:<user_name> /home/gentoo
+  # sudo chown <user>:<user> /home/gentoo
   # cd /home/gentoo
   # curl -L https://api.github.com/repos/ashnbclarke/gentoo-system/tarball > gentoo-system.tar.gz
   # tar xzf gentoo-system.tar.gz
