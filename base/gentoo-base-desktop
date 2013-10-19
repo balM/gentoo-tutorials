@@ -290,7 +290,6 @@ L. Expand your cache of useful desktop applications
 M. Install a network printer via a ppd file
   
   M1. Manage cups from the command line (cups-pdf is no longer required as 'print-to-file : pdf' is available by default in cups)
-
   Check the printers ethernet connection and power. Turn on and allow to settle.
   Print a Configuration page from the control panel of the printer by pressing and holding the Go button for 5 seconds.
   Find the ip address of the printer from the informtion on this Configuration page.
