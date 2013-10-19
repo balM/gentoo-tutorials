@@ -291,14 +291,26 @@ M. Install a network printer via a ppd file
   
   M1. Manage cups from the command line (cups-pdf is no longer required as 'print-to-file : pdf' is available by default in cups)
 
-  *NOTE: Check the printers ethernet connection and power. Turn on and allow to settle...
+  Check the printers ethernet connection and power. Turn on and allow to settle.
+  Print a Configuration page from the control panel of the printer by pressing and holding the Go button for 5 seconds.
+  Find the ip address of the printer from the informtion on this Configuration page.
+  
+  M2. Configure a static address for your printer
+  # sudo emerge -a elinks (a text-mode browser)
+  # elinks http://*.*.*.* (printer ip address printed on the Configuration page above) 
+  >>>>>>>>>>
+  Use the up and down keys to navigate to the 'Networking' link and enter
+  Enter Login user name = leave as blank
+  Enter login password = 0000 (default password)
+  Use the up and down keys to change to a manual ip address (here: 192.168.0.90) and apply the changes
+  >>>>>>>>>>  
 
   # sudo lpadmin -p HPP -E -v socket://192.168.0.90:9100 -P /home/gentoo/github-root/etc/portage/drivers/P2015.ppd
 
-  M2. Set HP Printer (HPP) as default printer
+  M3. Set HP Printer (HPP) as default printer
   # sudo lpoptions -d HPP
 
-  M3. Get cups status and individual printer status
+  M4. Get cups status and individual printer status
   # sudo lpstat -s
   # sudo lpstat -p HPP
   
