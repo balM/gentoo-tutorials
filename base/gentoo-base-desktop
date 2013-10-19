@@ -486,7 +486,7 @@ T. Change OpenRC boot verbosity and startup type
   T2. Set inittab to silent boot 
   # sudo cp /etc/inittab.silent /etc/inittab
   
-  T3. Set OpenRC to load in parallel by default
+  T3. Set OpenRC to start in 'fast' parallel mode by default
   # sudo cp /home/gentoo/github-root/etc/rc.conf /etc
   # nano /etc/rc.conf (review)
   ----------
@@ -520,7 +520,7 @@ T. Change OpenRC boot verbosity and startup type
 
 U. Reboot and login as user to check OpenRC in silent boot mode
 
-  *NOTE: The boot messages are now hidden. You can toggle back to verbose mode if you encounter errors.
+  *NOTE: The boot messages are now hidden. You can toggle back to verbose mode if you encounter errors at a later date.
 
 
 V. Check Slim login manager functionality and update settings
