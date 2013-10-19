@@ -302,7 +302,7 @@ M. Install a network printer via a ppd file
   Use the up and down keys to navigate to the 'Networking' link and enter
   Enter Login user name = leave as blank
   Enter login password = 0000 (default password)
-  Use the up and down keys to change to a manual ip address (here: 192.168.0.90) and apply the changes
+  Use the up and down keys to change to a manual ip address (in this case: 192.168.0.90) and apply the changes
   >>>>>>>>>>  
 
   # sudo lpadmin -p HPP -E -v socket://192.168.0.90:9100 -P /home/gentoo/github-root/etc/portage/drivers/P2015.ppd
