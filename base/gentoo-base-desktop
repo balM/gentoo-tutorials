@@ -358,7 +358,7 @@ N. Install login manager Slim with a simple Gentoo Cow theme
   DISPLAYMANAGER="slim"
   ----------
   
-  *NOTE: We are going to test this setup BEFORE adding xdm to the default run leve!
+  *NOTE: We are going to test this setup BEFORE adding xdm to the default run level!
   
 
 O. Install system icons and gtk+ theme
