@@ -52,7 +52,7 @@ B. Update portage with changes needed for a gtk+2 centric desktop.
 C. Setup local overlay "Gentoo-Home".
 D. Update world after use flag changes.
 E. Install miscellaneous tools.
-F. Add new openrc services to the default runlevel and start services.
+F. Add and start new openrc services to the default runlevel.
 G. Install ffmpeg base to satisfy dependencies.
 H. Install and setup sound services.
 I. Install fonts.
@@ -157,7 +157,7 @@ E. Install miscellaneous tools
   ----------
   
   
-F. Add new openrc services to the default runlevel and start services
+F. Add and start new openrc services to the default runlevel
 
   # sudo rc-update add acpid default
   # sudo rc-update add cupsd default
