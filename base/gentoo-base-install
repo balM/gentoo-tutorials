@@ -365,7 +365,7 @@ L. Install the gentoo-sources kernel
 
   * NOTE: as no swap file or partition is required in this setup paging is disabled in this kernel
 
-  # emerge gentoo-sources
+  # emerge -a gentoo-sources
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/boot/config-3.11.5-gentoo -P /tmp
   # mv /tmp/config-3.11.5-gentoo /usr/src/linux/.config
   # cd /usr/src/linux
@@ -378,15 +378,15 @@ L. Install the gentoo-sources kernel
 M. Install base system packages
 
   M1. Setup a system logger
-  # emerge metalog
+  # emerge -a metalog
   # rc-update add metalog default
 
-  M2. Setup a file inder
-  # emerge mlocate
+  M2. Setup a file finder
+  # emerge -a mlocate
   # rc-update add metalog default
 
   M3. Setup file system tools
-  # emerge btrfs-progs
+  # emerge -a btrfs-progs
 
 
 N. Setup the static ethernet network
@@ -411,18 +411,19 @@ O. Set root password
 P. Install the Grub2 bootloader
 
   P1. Install grub
-  # emerge grub
+  # emerge -a grub
 
   P2. Configure grub for a silent boot
   # cd /etc/grub.d
   # rm 2* 3* 4* R*
 
-  decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
+  P3. Decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
   # nano -c 10*
   ----------
   #echo  '$(echo "$message" | grub_quote)'
   --------------
 
+  P4. Configure default boot options
   # nano /etc/default/grub
   ----------
   GRUB_DEFAULT=0
@@ -435,10 +436,10 @@ P. Install the Grub2 bootloader
   GRUB_GFXPAYLOAD_LINUX=keep
   GRUB_DISABLE_RECOVERY=true
 
-  P3. Install grub to /dev/sda (SSD device)
+  P5. Install grub to /dev/sda (SSD device)
   # grub2-install /dev/sda
 
-  P4. Create grub configuration
+  P6. Create grub configuration
   # LANG=C grub-mkconfig -o /boot/grub/grub.cfg
 
 
