@@ -179,7 +179,7 @@ G. Install the realtek 8111GR Gigabit Lan controller firmware
 
 H. Reconfigure the upgraded network system using iproute2
 
-  NOTE: we are now using 'netifrc' + 'newnet' so the following changes are needed:
+  NOTE: we are now using 'netifrc' + 'newnet' use flags so the following changes are needed:
 
   H1. Remove the old net.enp3s0 service and link
   # rc-update del net.enp3s0 default
