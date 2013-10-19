@@ -171,7 +171,7 @@ G. Install the realtek 8111GR Gigabit Lan controller firmware
   # emerge -a linux-firmware
 
   G2. Edit the list of firmware to load at boot (only one firmware required for the Asus Z87-A)
-      * Portage will use this generic 'linux-firmware' config file each time it upgrades the linux-firmware-<version> package
+  *NOTE: Portage will use this generic 'linux-firmware' config file each time it upgrades the linux-firmware-<version> package
   # rm /etc/portage/savedconfig/sys-kernel/linux-firmware-*
   # echo "rtl_nic/rtl8168g-2.fw" > /etc/portage/savedconfig/sys-kernel/linux-firmware
   # emerge -a linux-firmware (notice portage using the generic "linux-firmware" config)
