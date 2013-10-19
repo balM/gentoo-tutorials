@@ -64,7 +64,7 @@ N. Install login manager Slim with Gentoo theme.
 O. Install system icons and gtk+ theme.
 P. Install bash scripts and bash aliases.
 Q. Prepare use of themes and default applications for users.
-R. Check for use flag changes.
+R. Rebuild ffmpeg with unrestricted use flags.
 S. Reboot and login as user to check OpenRC.
 T. Change OpenRC boot verbosity and startup type.
 U. Reboot and login as user to check OpenRC in silent boot mode.
@@ -465,9 +465,9 @@ Q. Prepare use of themes and default applications for users
   # sudo gpasswd -a <user_name> audio,cdrom,video,cdrw,usb,lpadmin
   
 
-R. Check for ffmpeg use flag changes
+R. Rebuild ffmpeg with unrestricted use flags
 
-  # sudo emerge -auDN world
+  # sudo emerge -a ffmpeg
   
   
 S. Reboot and login as user to check OpenRC
