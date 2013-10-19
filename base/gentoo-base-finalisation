@@ -248,11 +248,11 @@ I. Install and setup dnsmasq and macchanger
 
 j. Enable/Disable standard openrc services
 
-  J1. Enable standard services
+  J1. Enable utilised services
   # rc-update add consolekit default
   # rc-update add dbus default
 
-  J2. Disable standard services
+  J2. Disable unused services
   # rc-update del swap boot
   # rc-update del swapfiles boot
   # rc-update del fsck boot
