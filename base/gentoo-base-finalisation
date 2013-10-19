@@ -372,7 +372,7 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
 
   R1. Boot from the systemrescuecd live usb
 
-  R2. Mount the drive containing the ROOT subvolume to the live usb's existing /backup directory
+  R2. Mount the drive containing the ROOT subvolume to the live usb's existing /mnt/backup directory
   # mount /dev/sda /mnt/backup
   # mv /mnt/backup/ROOT /mnt/backup/ROOT-old
   # mv /mnt/backup/ROOT-old/000/root-test-snapshot /mnt/backup/ROOT
