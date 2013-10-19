@@ -169,7 +169,7 @@ G. Install ffmpeg base to satisfy dependencies
 
   *NOTE: Regarding the choice between ffmpeg and libav.
   I still prefer ffmpeg to libav due to ffmpeg's inclusion of FFTOOLS (i.e., -mov faststart)
-  Totem:2, which requires 'ffmpeg' rather than libav, is chosen over media-video/parole because of its excellent media browser plugins.
+  Totem:2, which requires 'ffmpeg' rather than libav, is chosen over media-video/parole because of its excellent internet browser media plugins.
   
   # sudo USE="-frei0r" emerge -a ffmpeg
   
