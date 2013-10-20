@@ -1,7 +1,7 @@
 GENTOO LINUX BASE DESKTOP
 =========================
 
-[ UPDATED TO KERNEL : 3.11.6-gentoo ]
+[ UPDATED : 2013.10.20 ]
 
 
 Desktop installation
@@ -107,9 +107,9 @@ B. Update portage with changes needed for a gtk+2 centric desktop
   B3. Enable nvidia-drivers kernel patch
   # sudo mkdir -p /etc/portage/patches/x11-drivers/nvidia-drivers
   # sudo cp /home/gentoo/github-root/etc/portage/patches/x11-drivers/nvidia-drivers/linux.patch /etc/portage/patches/x11-drivers/nvidia-drivers
-  # sudo nano /etc/portage/patches/x11-drivers/nvidia-drivers (check kernel version : i.e., 3.11.6-gentoo)
+  # sudo nano /etc/portage/patches/x11-drivers/nvidia-drivers (check kernel version : i.e., a.b.c-gentoo)
   ----------
-  +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 6)
+  +#if LINUX_VERSION_CODE >= KERNEL_VERSION(a, b, c)
   ----------
   
   

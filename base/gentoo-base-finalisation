@@ -1,7 +1,7 @@
 GENTOO LINUX BASE FINALISATION
 ==============================
 
-[ UPDATED TO ORACLE-JDK-BIN : 1.7.0.45 ]
+[ UPDATED : 2013.10.20 ]
 
 
 Pre-desktop optimisation
@@ -258,7 +258,7 @@ j. Enable/Disable standard openrc services
   # rc-update del fsck boot
 
   J4. Review openrc services
-  # rc-update show
+  # rc-update show (review)
 
   bootmisc | boot                         
   consolefont | boot                         
