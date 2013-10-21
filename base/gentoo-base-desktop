@@ -1,7 +1,7 @@
 GENTOO LINUX BASE DESKTOP
 =========================
 
-[ UPDATED : 2013.10.21 ] improved 'video tearing' fix see Q.
+[ UPDATED : 2013.10.21 ] improved 'video tearing' fix see J and Q.
 
 
 Desktop installation
@@ -454,7 +454,7 @@ P. Install bash scripts and bash aliases
   ----------
 
 
-Q. Prepare use of themes and default applications for users (video tearing fixed with xorg.conf and .compton.conf)
+Q. Prepare use of themes and default applications for users (video tearing fixed with xorg.conf and .compton.conf changes)
 
   # cp -r /home/gentoo/github-root/anbc/.[a-zA-Z0-9]* $HOME
   # cp -r /home/gentoo/github-root/anbc/* $HOME
