@@ -1,7 +1,7 @@
 GENTOO LINUX BASE DESKTOP
 =========================
 
-[ UPDATED : 2013.10.20 ]
+[ UPDATED : 2013.10.21 ] improved 'video tearing' fix see Q.
 
 
 Desktop installation
@@ -242,8 +242,6 @@ J. Install and configure Xorg and NVidia drivers
     Driver         "nvidia"
     VendorName     "NVIDIA Corporation"
     BoardName      "GeForce GTX 660"
-    Option         "UseEdidDpi" "False"
-    Option         "DPI" "96 x 96"
   EndSection
 
   Section "Screen"
@@ -252,7 +250,8 @@ J. Install and configure Xorg and NVidia drivers
     Monitor        "Monitor0"
     DefaultDepth    24
     Option         "Stereo" "0"
-    Option         "metamodes" "1920x1080_60 +0+0"
+    Option         "nvidiaXineramaInfoOrder" "DFP-1"
+    Option         "metamodes" "nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
     Option         "SLI" "Off"
     Option         "MultiGPU" "Off"
     Option         "BaseMosaic" "off"
@@ -455,7 +454,7 @@ P. Install bash scripts and bash aliases
   ----------
 
 
-Q. Prepare use of themes and default applications for users
+Q. Prepare use of themes and default applications for users (video tearing fixed with xorg.conf and .compton.conf)
 
   # cp -r /home/gentoo/github-root/anbc/.[a-zA-Z0-9]* $HOME
   # cp -r /home/gentoo/github-root/anbc/* $HOME
