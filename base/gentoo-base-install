@@ -159,9 +159,11 @@ F. Format the partitionless disks with BTRFS and prepare the subvolumes
 
 G. Mount the subvolumes
 
-  # mount -o noatime,ssd,subvol=ROOT /dev/sda /mnt/gentoo
+  *NOTE: BTRFS detects ssd drives but we'll mount the drives with explicit options both here and in fstab later.
+
+  # mount -o noatime,space_cache,ssd,subvol=ROOT /dev/sda /mnt/gentoo
   # mkdir /mnt/gentoo/home
-  # mount -o noatime,subvol=HOME /dev/sdb /mnt/gentoo/home
+  # mount -o noatime,space_cache,subvol=HOME /dev/sdb /mnt/gentoo/home
   # mount | column -t (print mount point info)
 
 
@@ -286,10 +288,11 @@ K. Setup system files
   # date (check output is correct!)
 
   K2. configure fstab
+  *NOTE: Explictly mount BTRFS with needed options - do not use 'defaults'
   # nano /etc/fstab
   ----------  
-  LABEL=gentoo / btrfs noatime,ssd,subvol=ROOT 0 0
-  LABEL=home /home btrfs noatime,subvol=HOME 0 0
+  LABEL=gentoo / btrfs noatime,space_cache,ssd,subvol=ROOT 0 0
+  LABEL=home /home btrfs noatime,space_cache,subvol=HOME 0 0
   tmpfs /tmp tmpfs noatime,nodiratime 0 0
   ----------
 
