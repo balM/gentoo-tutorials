@@ -380,6 +380,11 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
   # btrfs subvolume list /mnt/backup
   # umount /mnt/backup
   # reboot (remove live usb)
+  
+  *NOTE: use the 'fstrim' (discard unused blocks on a mounted filesystem) command to periodically trim your ssd.
+  # sudo fstrim -v /
+  
+  For information on the BTRFS filesystem see: https://btrfs.wiki.kernel.org/index.php/Main_Page
 
 
   see next tutorial : Part 3 of 3 :: Gentoo Base Desktop
