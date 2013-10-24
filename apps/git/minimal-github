@@ -1,7 +1,7 @@
 GENTOO LINUX MINIMAL GITHUB
 ===========================
 
-[ UPDATED : 2013.10.20 ]
+[ UPDATED : 2013.10.24 ]
 
 Github is a great free resource for sharing snippets of code publically.
 
@@ -185,7 +185,7 @@ I. Test set-up by editing README.md locally then committing and pushing to githu
 
     master -> master
 
-  GitHub Tutorials Updated :-) 
+  GitHub myrepository Updated :-) 
   //////////output//////////
 
   I4. Simply run 'gitup.sh' in a terminal whenever changes need committing and pushing online
