@@ -77,7 +77,7 @@ A. Download and write the SystemRescueCd boot iso to usb
   LINUX : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#A.29_Recommended_USB_installation_method_from_Linux
   WINDOWS : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#B.29_Recommended_USB_installation_method_from_Windows 
   
-  A3. Edit the pendrive syslinux/syslinux.cfg file (if you edit this file in Windows make sure the 'Line Endings' are set to Linux (use http://www.pnotepad.org : Tools/Line-Endings)
+  A3. Edit the pendrive syslinux/syslinux.cfg file (if you edit this file in Windows make sure the 'Line Endings' are set to Linux (use http://www.pnotepad.org : Menu||Tools/Line-Endings)
   # nano /run/media/<user>/SYSRESC/syslinux/syslinux.cfg (append setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8 to all menu items)
   ----------
   LABEL rescuecd_std
