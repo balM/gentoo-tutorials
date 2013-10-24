@@ -77,32 +77,6 @@ A. Download and write the SystemRescueCd boot iso to usb
   LINUX : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#A.29_Recommended_USB_installation_method_from_Linux
   WINDOWS : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#B.29_Recommended_USB_installation_method_from_Windows 
   
-  A3. Edit the pendrive syslinux/syslinux.cfg file (if you edit this file in Windows make sure the 'Line Endings' are set to Linux (use http://www.pnotepad.org : Menu||Tools/Line-Endings)
-  # nano /run/media/<user>/SYSRESC/syslinux/syslinux.cfg (append setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8 to all menu items)
-  ----------
-  LABEL rescuecd_std
-  APPEND rescue64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_docache
-  APPEND rescue64 docache setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_791
-  APPEND rescue64 nomodeset vga=791 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_us
-  APPEND rescue64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_auto
-  APPEND rescue64 root=auto setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_alt
-  APPEND altker64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-
-  LABEL rescuecd_xorg
-  APPEND rescue64 dostartx setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
-  ----------
-  *NOTE: This SystemRescueCd usb pendrive is now customised to your static ethernet configured network (ammend addresses as needed)
-  
 
 B. Boot from the SysRescueCd usb pendrive
 
@@ -114,6 +88,9 @@ B. Boot from the SysRescueCd usb pendrive
   >> Press F10 to save and reboot
 
   B2. At the boot menu enter menu label 7 [ rescuecd_xorg ]
+  
+  B3. In the default open terminal configure the network for the live system
+  # nm-connection-editor (static ip address 192.168.0.91/24 with google's public dns 8.8.8.8)
 
 
 C. View this Asus Z87-A base-install guide
@@ -125,8 +102,6 @@ C. View this Asus Z87-A base-install guide
 
 
 D. Initialise both the SSD and HDD disks if new, or clear existing partitions if not
-
-  *NOTE: Use the default open terminal to input these commands
 
   [  /dev/sda 120GB  ] partitionless SSD
 
@@ -197,7 +172,8 @@ H. Chroot into the new system
   # mount --rbind /sys /mnt/gentoo/sys
   # mount --rbind /dev /mnt/gentoo/dev
   # cd /mnt/gentoo
-  # env -i HOME=/root TERM=$TERM chroot . bash -l
+  # env -i HOME=/root TERM=$TERM /bin/bash
+  # chroot . /bin/bash -l
   # export PS1="(chroot) $PS1"
 
 
