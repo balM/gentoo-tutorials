@@ -109,7 +109,7 @@ A. Update system prior to optimisation
   A8. Upgrade system with minimal useflags
   # emerge -auDN system
   
-  A9. Create default BTRFS snapshot directories
+  A9. Create default BTRFS snapshot directories (ROOT:/000 HOME:/home/001)
   # mkdir /000 /home/001
 
 
