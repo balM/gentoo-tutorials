@@ -438,7 +438,7 @@ P. Install bash scripts and bash aliases
 
   # BTRFS ALIASES
   alias desnap-root="sudo btrfs subvolume delete /000/*"
-  alias desnap-home="sudo btrfs subvolume delete/home/001/*"
+  alias desnap-home="sudo btrfs subvolume delete /home/001/*"
   alias snap-show="clear && ls -lh /000 && echo && ls -lh /home/001 && echo && sudo btrfs subvolume list / && echo && sudo btrfs subvolume list /home && echo"
 
   # SCRIPTS (/usr/local/bin)
