@@ -6,7 +6,6 @@ GENTOO LINUX BASE INSTALL
 From chroot to first boot
 -------------------------
 
-
 64bit unstable (~amd64) Gentoo Linux installation on an Asus Z87-A motherboard.
 Install a minimal KISS base system with default openrc services.
 
