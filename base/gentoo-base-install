@@ -1,7 +1,7 @@
 GENTOO LINUX BASE INSTALL
 =========================
 
-[ UPDATED : 2013.10.23]
+[ UPDATED : 2013.10.24] Improved SystemRescueCd Boot Options...
 
 
 From chroot to first boot
@@ -49,21 +49,20 @@ INSTALLATION OVERVIEW
 -------------
 A. Download and write the SystemRescueCd boot iso to usb.
 B. Boot from the SysRescueCd usb pendrive.
-C. Configure the live usb environment network.
-D. View this Asus Z87-A base-install guide.
-E. Initialise both the SSD and HDD disks if new, or clear existing partitions if not.
-F. Format the partitionless disks with BTRFS and prepare the subvolumes.
-G. Mount the subvolumes.
-H. Install an amd64 stage3 tarball.  
-I. Chroot into the new system.
-J. Configure portage.
-K. Setup system files.
-L. Install the gentoo-sources kernel.
-M. Install base system packages.
-N. Setup the static ethernet network.
-O. Set root password.
-P. Install the Grub2 bootloader.
-Q. Exit the chroot environment and reboot.
+C. View this Asus Z87-A base-install guide.
+D. Initialise both the SSD and HDD disks if new, or clear existing partitions if not.
+E. Format the partitionless disks with BTRFS and prepare the subvolumes.
+F. Mount the subvolumes.
+G. Install an amd64 stage3 tarball.  
+H. Chroot into the new system.
+I. Configure portage.
+J. Setup system files.
+K. Install the gentoo-sources kernel.
+L. Install base system packages.
+M. Setup the static ethernet network.
+N. Set root password.
+O. Install the Grub2 bootloader.
+P. Exit the chroot environment and reboot.
 
 
 BASE INSTALL
@@ -77,7 +76,58 @@ A. Download and write the SystemRescueCd boot iso to usb
   A2. Write the iso to a portable usb pendrive
   LINUX : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#A.29_Recommended_USB_installation_method_from_Linux
   WINDOWS : see http://www.sysresccd.org/Sysresccd-manual-en_How_to_install_SystemRescueCd_on_an_USB-stick#B.29_Recommended_USB_installation_method_from_Windows 
+  
+  A3. Edit the pendrive syslinux/syslinux.cfg file (if you edit this file in Windows make sure the 'Line Endings' are set to Linux (use http://www.pnotepad.org : Tools/Line-Endings)
+  # nano /run/media/<user>/SYSRESC/syslinux/syslinux.cfg (append setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8 to all menu items)
+  ----------
+  BEFORE EDIT
+  ----------
+  LABEL rescuecd_std
+  APPEND rescue64 scandelay=1 -- rescue32 scandelay=1
 
+  LABEL rescuecd_docache
+  APPEND rescue64 docache -- rescue32 docache
+
+  LABEL rescuecd_791
+  APPEND rescue64 nomodeset vga=791 -- rescue32 nomodeset vga=791
+
+  LABEL rescuecd_us
+  APPEND rescue64 setkmap=us -- rescue32 setkmap=us
+
+  LABEL rescuecd_auto
+  APPEND rescue64 root=auto -- rescue32 root=auto
+
+  LABEL rescuecd_alt
+  APPEND altker64 scandelay=1 -- altker32 scandelay=1
+
+  LABEL rescuecd_xorg
+  APPEND rescue64 dostartx -- rescue32 dostartx
+  ----------
+  AFTER EDIT
+  ----------
+  LABEL rescuecd_std
+  APPEND rescue64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_docache
+  APPEND rescue64 docache setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_791
+  APPEND rescue64 nomodeset vga=791 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_us
+  APPEND rescue64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_auto
+  APPEND rescue64 root=auto setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_alt
+  APPEND altker64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+
+  LABEL rescuecd_xorg
+  APPEND rescue64 dostartx setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
+  ----------
+  *NOTE: This SystemRescueCd usb pendrive is now customised to your static ethernet configured network (ammend addresses as needed)
+  
 
 B. Boot from the SysRescueCd usb pendrive
 
@@ -88,38 +138,18 @@ B. Boot from the SysRescueCd usb pendrive
   >> In EZ-Mode set the time to UTC time
   >> Press F10 to save and reboot
 
-  B2. At the boot prompt enter the following to enter the default live desktop environment
-  >> C  [Standard 64bit kernel (rescue64) with more choices]
-  >> 2  [SystemRescueCd with all files cached to memory]
-  # wizard
-  >> xorg-run
+  B2. At the boot menu enter menu label 7
 
 
-C. Configure the live usb environment network
+C. View this Asus Z87-A base-install guide
 
-  * NOTE: DHCP should be turned off for security reasons. In the default open terminal configure the network manager manually
+  C1. Open the Midori web browser
 
-  # nm-connection-manager
-  >>>>>>>>>>
-  Choose the default eth0 entry
-  Change the IPv4 settings from DHCP to manual
-  Enter address : 192.168.0.91
-  Enter Netmask : 24
-  Enter Gateway : 192.168.0.1
-  Enter DNS services : 8.8.8.8,8.8.4.4 (google public DNS)
-  save
-  >>>>>>>>>>
-
-
-D. View this Asus Z87-A base-install guide
-
-  D1. Open the Midori web browser
-
-  D2. Navigate to this guide on github
+  C2. Navigate to this guide on github
   https://raw.github.com/ashnbclarke/gentoo-tutorials/master/base/gentoo-base-install
 
 
-E. Initialise both the SSD and HDD disks if new, or clear existing partitions if not
+D. Initialise both the SSD and HDD disks if new, or clear existing partitions if not
 
   [  /dev/sda 120GB  ] partitionless SSD
 
@@ -134,13 +164,13 @@ E. Initialise both the SSD and HDD disks if new, or clear existing partitions if
   # w (write partition table)
 
 
-F. Format the partitionless disks with BTRFS and prepare the subvolumes
+E. Format the partitionless disks with BTRFS and prepare the subvolumes
 
-  F1. Format the newly initiated or cleared disks
+  E1. Format the newly initiated or cleared disks
   # mkfs.btrfs -f -L gentoo /dev/sda
   # mkfs.btrfs -f -L home /dev/sdb
 
-  F2. Create btrfs ROOT subvolume on SSD
+  E2. Create btrfs ROOT subvolume on SSD
   # mount /dev/sda /mnt/gentoo
   # cd /mnt/gentoo
   # btrfs subvolume create /mnt/gentoo/ROOT
@@ -148,7 +178,7 @@ F. Format the partitionless disks with BTRFS and prepare the subvolumes
   # cd /
   # umount /dev/sda
 
-  F3. Create btrfs HOME subvolume on HDD
+  E3. Create btrfs HOME subvolume on HDD
   # mount /dev/sdb /mnt/gentoo
   # cd /mnt/gentoo
   # btrfs subvolume create /mnt/gntoo/HOME
@@ -157,7 +187,7 @@ F. Format the partitionless disks with BTRFS and prepare the subvolumes
   # umount /dev/sdb
 
 
-G. Mount the subvolumes
+F. Mount the subvolumes
 
   *NOTE: BTRFS detects ssd drives but we'll mount the drives with explicit options both here and in fstab later.
 
@@ -167,7 +197,7 @@ G. Mount the subvolumes
   # mount | column -t (print mount point info)
 
 
-H. Install an amd64 stage3 tarball     
+G. Install an amd64 stage3 tarball     
 
   NOTE: open a tab in midori and navigate to your closest gentoo mirror to get the latest tarball download link for wget
 
@@ -180,7 +210,7 @@ H. Install an amd64 stage3 tarball
   # cd /
 
 
-I. Chroot into the new system
+H. Chroot into the new system
 
   * NOTE: no swap file or partition is required in this setup!
 
@@ -195,7 +225,7 @@ I. Chroot into the new system
   # export PS1="(chroot) $PS1"
 
 
-J. Configure portage
+I. Configure portage
 
   # emerge-webrsync
   # emerge --sync --quiet
@@ -279,15 +309,15 @@ J. Configure portage
   ----------
 
 
-K. Setup system files
+J. Setup system files
 
-  K1. Configure localtime
+  J1. Configure localtime
   # ls /usr/share/zoneinfo
   # cp /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
   # echo "Asia/Hong_Kong" > /etc/timezone
   # date (check output is correct!)
 
-  K2. configure fstab
+  J2. configure fstab
   *NOTE: Explictly mount BTRFS with needed options - do not use 'defaults'
   # nano /etc/fstab
   ----------  
@@ -296,7 +326,7 @@ K. Setup system files
   tmpfs /tmp tmpfs noatime,nodiratime 0 0
   ----------
 
-  K3. Setup the hosts file and hostname
+  J3. Setup the hosts file and hostname
   # nano /etc/conf.d/hostname
   ----------  
   gentoo
@@ -306,7 +336,7 @@ K. Setup system files
   127.0.0.1	gentoo.home gentoo localhost.localdomain localhost
   ----------
 
-  K4. Setup locales (some applications require en_US!)
+  J4. Setup locales (some applications require en_US!)
   # nano /etc/locale.gen
   ----------  
   en_GB.UTF-8 UTF-8
@@ -319,14 +349,14 @@ K. Setup system files
   LC_COLLATE=C
   ----------   
 
-  K5. Setup console font choices
+  J5. Setup console font choices
   # nano /etc/conf.d/consolefont
   ----------  
   consolefont="Lat2-Terminus16"
   ---------- 
   # rc-update add conslefont boot
 
-  K6. Setup inittab to show init messages during the setup and finalisation phases
+  J6. Setup inittab to show init messages during the setup and finalisation phases
   # wget https://raw.github.com/ashnbclarke/gentoo-system/master/etc/inittab.verbose.chroot -P /tmp  
   # mv /tmp/inittab.verbose.chroot /etc/inittab
   # nano /etc/inittab (review)
@@ -351,7 +381,7 @@ K. Setup system files
   x:a:once:/etc/X11/startDM.sh
   --------------  
 
-  K7. Setup system services
+  J7. Setup system services
   # nano /etc/rc.conf
   ----------
   rc_parallel="NO"
@@ -364,7 +394,7 @@ K. Setup system files
   rc_controller_cgroups="YES"
   ----------
 
-L. Install the gentoo-sources kernel
+K. Install the gentoo-sources kernel
 
   * NOTE: As no swap file or partition is required in this setup paging is disabled in this kernel
 
@@ -378,21 +408,21 @@ L. Install the gentoo-sources kernel
   # make install
 
 
-M. Install base system packages
+L. Install base system packages
 
-  M1. Setup a system logger
+  L1. Setup a system logger
   # emerge -a metalog
   # rc-update add metalog default
 
-  M2. Setup a file finder
+  L2. Setup a file finder
   # emerge -a mlocate
   # rc-update add metalog default
 
-  M3. Setup file system tools
+  L3. Setup file system tools
   # emerge -a btrfs-progs
 
 
-N. Setup the static ethernet network
+M. Setup the static ethernet network
 
   # cd /etc/init.d
   # ln -s net.lo net.enp3s0
@@ -406,27 +436,27 @@ N. Setup the static ethernet network
   ----------
 
 
-O. Set root password
+N. Set root password
 
   # passwd
 
 
-P. Install the Grub2 bootloader
+O. Install the Grub2 bootloader
 
-  P1. Install grub
+  O1. Install grub
   # emerge -a grub
 
-  P2. Configure grub for a silent boot
+  O2. Configure grub for a silent boot
   # cd /etc/grub.d
   # rm 20_linux_xen 30_os-prober 40_custom 41_custom README
 
-  P3. Decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
+  O3. Decrease grub boot verbosity - comment out 2 "echo" statements around line number 123 and 130
   # nano -c 10-linux
   ----------
   #echo  '$(echo "$message" | grub_quote)'
   --------------
 
-  P4. Configure default boot options
+  O4. Configure default boot options
   # nano /etc/default/grub
   ----------
   GRUB_DEFAULT=0
@@ -439,14 +469,14 @@ P. Install the Grub2 bootloader
   GRUB_GFXPAYLOAD_LINUX=keep
   GRUB_DISABLE_RECOVERY=true
 
-  P5. Install grub to /dev/sda (SSD device)
+  O5. Install grub to /dev/sda (SSD device)
   # grub2-install /dev/sda
 
-  P6. Create grub configuration
+  O6. Create grub configuration
   # LANG=C grub-mkconfig -o /boot/grub/grub.cfg
 
 
-Q. Exit the chroot environment and reboot
+P. Exit the chroot environment and reboot
 
   # exit
   # cd /
