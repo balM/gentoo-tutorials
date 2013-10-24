@@ -151,6 +151,8 @@ C. View this Asus Z87-A base-install guide
 
 D. Initialise both the SSD and HDD disks if new, or clear existing partitions if not
 
+  *NOTE: Use the default open terminal to input these commands
+
   [  /dev/sda 120GB  ] partitionless SSD
 
   # fdisk –c –u /dev/sda
