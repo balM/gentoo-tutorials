@@ -393,7 +393,6 @@ L. Install base system packages
 
   L2. Setup a file finder
   # emerge -a mlocate
-  # rc-update add metalog default
 
   L3. Setup file system tools
   # emerge -a btrfs-progs
