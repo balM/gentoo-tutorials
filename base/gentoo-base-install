@@ -80,31 +80,6 @@ A. Download and write the SystemRescueCd boot iso to usb
   A3. Edit the pendrive syslinux/syslinux.cfg file (if you edit this file in Windows make sure the 'Line Endings' are set to Linux (use http://www.pnotepad.org : Tools/Line-Endings)
   # nano /run/media/<user>/SYSRESC/syslinux/syslinux.cfg (append setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8 to all menu items)
   ----------
-  BEFORE EDIT
-  ----------
-  LABEL rescuecd_std
-  APPEND rescue64 scandelay=1 -- rescue32 scandelay=1
-
-  LABEL rescuecd_docache
-  APPEND rescue64 docache -- rescue32 docache
-
-  LABEL rescuecd_791
-  APPEND rescue64 nomodeset vga=791 -- rescue32 nomodeset vga=791
-
-  LABEL rescuecd_us
-  APPEND rescue64 setkmap=us -- rescue32 setkmap=us
-
-  LABEL rescuecd_auto
-  APPEND rescue64 root=auto -- rescue32 root=auto
-
-  LABEL rescuecd_alt
-  APPEND altker64 scandelay=1 -- altker32 scandelay=1
-
-  LABEL rescuecd_xorg
-  APPEND rescue64 dostartx -- rescue32 dostartx
-  ----------
-  AFTER EDIT
-  ----------
   LABEL rescuecd_std
   APPEND rescue64 setkmap=us nomdadm nodhcp eth0=192.168.0.91/24 gateway=192.168.0.1 dns=8.8.8.8
 
