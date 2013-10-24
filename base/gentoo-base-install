@@ -197,8 +197,7 @@ H. Chroot into the new system
   # mount --rbind /sys /mnt/gentoo/sys
   # mount --rbind /dev /mnt/gentoo/dev
   # cd /mnt/gentoo
-  # env -i HOME=/root TERM=$TERM /bin/bash
-  # chroot . /bin/bash -l
+  # env -i HOME=/root TERM=$TERM chroot . bash -l
   # export PS1="(chroot) $PS1"
 
 
