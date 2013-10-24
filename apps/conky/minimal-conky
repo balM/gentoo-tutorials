@@ -111,7 +111,7 @@ E. Create conky configuration files
   E4. Create conky config
   # cd $HOME
   # wget https://raw.github.com/ashnbclarke/gentoo-tutorials/master/apps/conky/.conkyrc
-  # nano .conkyrc (review:)
+  # nano .conkyrc (review)
   ----------
   alignment top_right
   background yes
