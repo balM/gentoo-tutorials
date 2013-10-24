@@ -126,12 +126,12 @@ C. Setup local overlay "Gentoo-Home"
   # sudo cp /home/gentoo/github-root/usr/local/portage/media-sound/pavucontrol/pavucontrol-1.0.ebuild /usr/local/portage/media-sound/pavucontrol
   # sudo ebuild /usr/local/portage/media-sound/pavucontrol/pavucontrol-1.0.ebuild digest
   
-  C2. Setup openshot/openshot
+  C3. Setup openshot/openshot
   # sudo mkdir -p /usr/local/portage/media-video/openshot/
   # sudo cp /home/gentoo/github-root/usr/local/portage/media-video/openshot/openshot-1.4.3.ebuild /usr/local/portage/media-video/openshot/
   # sudo ebuild /usr/local/portage/media-video/openshot/openshot-1.4.3.ebuild digest
   
-  C2.  Setup x11-misc/gsimplecal/gsimplecal
+  C4.  Setup x11-misc/gsimplecal/gsimplecal
   # sudo mkdir -p /usr/local/portage/x11-misc/gsimplecal
   # sudo cp /home/gentoo/github-root/usr/local/portage/x11-misc/gsimplecal/gsimplecal-1.6.ebuild /usr/local/portage/x11-misc/gsimplecal
   # sudo ebuild /usr/local/portage/x11-misc/gsimplecal/gsimplecal-1.6.ebuild digest
