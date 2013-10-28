@@ -1,7 +1,7 @@
 GENTOO LINUX MINIMAL CONKY
 ==========================
 
-[ CLOSED : 2013.10.25 ]
+[ COMPLETED : 2013.10.25 ]
 
 Conky is a light-weight system monitor for X, that can display useful hardware information on your desktop. 
 On the Asus Z87-A you can access the coretemp and nct6775 info to monitor motherboard resources as well as hddtemp data, too.
