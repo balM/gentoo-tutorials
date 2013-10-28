@@ -1,7 +1,7 @@
 GENTOO LINUX BASE INSTALL
 =========================
 
-[ COMPLETED : 2013.10.25 ]
+[ COMPLETED : 2013.10.25 ] 
 
 From chroot to first boot
 -------------------------
@@ -457,6 +457,5 @@ P. Exit the chroot environment and reboot
   # umount -l /mnt/gentoo/dev{/shm,/pts,}
   # umount -l /mnt/gentoo{/home,/proc,}
   # reboot
-
 
   see next tutorial : Part 2 of 3 :: Gentoo Base Finalisation

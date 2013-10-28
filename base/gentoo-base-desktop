@@ -1,7 +1,7 @@
 GENTOO LINUX BASE DESKTOP
 =========================
 
-[ COMPLETED : 2013.10.25 ]
+[ COMPLETED : 2013.10.25 ] 
 
 Desktop installation
 --------------------
@@ -563,5 +563,4 @@ W. Create BTRFS snapshots using aliases and bash scripts
   # snap-root
   # snap-home
 
-    
   You now have a fairly complete minimalistic desktop. Reboot or logout via the Exit menu!

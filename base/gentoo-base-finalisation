@@ -1,7 +1,7 @@
 GENTOO LINUX BASE FINALISATION
 ==============================
 
-[ COMPLETED : 2013.10.25 ]
+[ COMPLETED : 2013.10.25 ] 
 
 Pre-desktop optimisation
 -------------------------
@@ -386,6 +386,5 @@ R. Replace the current subvolume with a snapshot [RECOVERY]
   # sudo fstrim -v /
   
   For information on the BTRFS filesystem see: https://btrfs.wiki.kernel.org/index.php/Main_Page
-
 
   see next tutorial : Part 3 of 3 :: Gentoo Base Desktop
